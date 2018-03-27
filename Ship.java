@@ -62,9 +62,7 @@ public class Ship {
 
 					}
 				}
-				for (int i = 0; i < tabCoord.length; i++) {
-					System.out.println(tabCoord[i]);
-				}
+				
 
 			}
 			/*
@@ -95,19 +93,49 @@ public class Ship {
 		return vertical;
 	}
 
-	/************************************/
+	public int getSize() {
+		int size = 0;
+		int i = 0;
+		while (tabCoord[i] != null) {
+			size++;
+			i++;
+		}
+		return size;
+	}
+
+	/*****************Code pour gérer le touché/coulé*******************/
 
 	public boolean isHit(String missileCoord) {
 		int i = 0;
 		boolean touche = false;
-		while(i<tabCoord.length){
-			if (tabCoord[i].equals(missileCoord)){
-				touche = true;
+		while (i < tabCoord.length && touche == false) {
+			if (tabCoord[i] == null) {
+				touche = false;
+			} else {
+
+				if (tabCoord[i].equals(missileCoord)) {
+					
+					int n = this.getHitNumber();
+					n += 1;
+					this.setHitNumber(n);
+					touche = true;
+				}
 			}
+
 			i++;
 		}
-
+	
 		return touche;
+
+		
 	}
+
+	public boolean isDestroyed() {
+		return hitNumber == this.getSize();
+	}
+	
+	/*****************************************************************/
+	
+	
 
 }
