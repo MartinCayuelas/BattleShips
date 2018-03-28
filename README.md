@@ -7,3 +7,6 @@ ___
 ##### Classes:
 - Main.java
 - Ship.java
+- Player.java
+- MainPlayer.java
+___

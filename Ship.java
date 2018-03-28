@@ -1,7 +1,7 @@
 public class Ship {
 	String startCoord;
 	String endCoord;
-	int hitNumber;
+	int[] hitCoord;
 	String[] tabCoord; // tableau des coordonnées entières du bateau
 	boolean vertical;
 
@@ -25,7 +25,6 @@ public class Ship {
 
 				startCoord = start;
 				endCoord = end;
-				hitNumber = 0;
 
 				if (partOneStart.equals(partOneEnd)) {
 					vertical = true;
@@ -44,10 +43,16 @@ public class Ship {
 							&& !tabCoord[i - 1].equals(endCoord)) {
 
 						tabCoord[i] = partOneStart + j;
+
 						j++;
 						i++;
 
 					}
+					hitCoord = new int[i];
+					for (int k = 0; k < hitCoord.length; k++) {
+						hitCoord[k] = 0;
+					}
+
 				} else {
 					char l = partOneStart.charAt(0);
 					l++;
@@ -61,7 +66,13 @@ public class Ship {
 						i++;
 
 					}
+					hitCoord = new int[i];
+					for (int k = 0; k < hitCoord.length; k++) {
+						hitCoord[k] = 0;
+						
+					}
 				}
+				
 				
 
 			}
@@ -81,14 +92,6 @@ public class Ship {
 		return endCoord;
 	}
 
-	public int getHitNumber() {
-		return hitNumber;
-	}
-
-	public void setHitNumber(int hitNumber) {
-		this.hitNumber = hitNumber;
-	}
-
 	public boolean isVertical() {
 		return vertical;
 	}
@@ -103,7 +106,7 @@ public class Ship {
 		return size;
 	}
 
-	/*****************Code pour gérer le touché/coulé*******************/
+	/***************** Code pour gérer le touché/coulé *******************/
 
 	public boolean isHit(String missileCoord) {
 		int i = 0;
@@ -114,28 +117,46 @@ public class Ship {
 			} else {
 
 				if (tabCoord[i].equals(missileCoord)) {
-					
-					int n = this.getHitNumber();
-					n += 1;
-					this.setHitNumber(n);
+
+					hitCoord[i] = 1;
 					touche = true;
 				}
 			}
 
 			i++;
 		}
-	
+
 		return touche;
 
-		
 	}
 
 	public boolean isDestroyed() {
-		return hitNumber == this.getSize();
+		int i = 0;
+		int cpt = 0;
+		while (i < hitCoord.length) {
+			if (hitCoord[i] == 1) {
+				cpt++;
+
+			}
+			i++;
+		}
+
+		return cpt == this.getSize();
 	}
-	
+
+	public int getHitNumber() {
+		int i = 0;
+		int cpt = 0;
+		while (i < hitCoord.length) {
+			if (hitCoord[i] == 1) {
+				cpt++;
+
+			}
+			i++;
+		}
+		return cpt;
+
+	}
 	/*****************************************************************/
-	
-	
 
 }
