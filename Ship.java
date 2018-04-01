@@ -99,7 +99,7 @@ public class Ship {
 	public int getSize() {
 		int size = 0;
 		int i = 0;
-		while (tabCoord[i] != null) {
+		while (i< tabCoord.length &&tabCoord[i] != null) {
 			size++;
 			i++;
 		}
@@ -130,6 +130,28 @@ public class Ship {
 
 	}
 
+	public int coordLeft(String h) {
+		int left=0;
+		String partOne;
+		char c;
+		
+		partOne = h.substring(0, 1); // Start
+		c = partOne.charAt(0);
+		left = (int)c;
+		left = left - 65; // Pas 64 car le tableau commence à 0
+		return left;
+	}
+	
+	public int coordRight(String h) {
+		int right = 0;
+		String partTwo;
+		partTwo = h.substring(1, 2); // Start
+		right = Integer.parseInt(partTwo);
+		
+		right = right - 1; //Car le tableau commence à 0
+		
+		return right;
+	}
 	public boolean isDestroyed() {
 		int i = 0;
 		int cpt = 0;

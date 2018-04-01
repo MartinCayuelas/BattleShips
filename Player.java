@@ -6,11 +6,13 @@ public class Player {
 	private String name;
 	private int score;
 	private ArrayList<Ship> flote;
+	private Grille maGrille;
 	
 	public Player(String nom){
 		name = nom;
 		score = 0;
 		flote = new ArrayList<Ship>();
+		maGrille = new Grille();
 			
 	}
 
@@ -29,6 +31,30 @@ public class Player {
 	public void setScore(int score) {
 		this.score = score;
 	}
+	
+	
+
+	public ArrayList<Ship> getFlote() {
+		return flote;
+	}
+	
+	
+
+	public Grille getMaGrille() {
+		return maGrille;
+	}
+
+	@Override
+	public String toString() {
+		String st ="";
+		st += this.getName()+": \n";
+		for(Ship s : this.flote) {
+			st += s;
+		}
+	return st;
+	}
+	
+	
 
 	
 	
