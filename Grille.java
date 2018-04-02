@@ -18,7 +18,6 @@ public class Grille {
 				{  0, 0, 0, 0, 0, 0, 0, 0, 0, 0 } };
 
 		this.grille = grille;
-
 	}
 
 	public int[][] getGrille() {
@@ -28,6 +27,23 @@ public class Grille {
 	public void setGrille(int a, int b) {
 		grille[b][a] = 1;
 	}
+	
+	public void restartGrille() {
+		int[][] grille = { 
+				{ 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 },
+				{ 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 },
+				{ 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 },
+				{ 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 },
+				{ 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 },
+				{ 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 },
+				{ 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 },
+				{ 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 },
+				{ 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 },
+				{  0, 0, 0, 0, 0, 0, 0, 0, 0, 0 } };
+
+		this.grille = grille;
+	}
+	
 
 	public String toString() {
 		String str ="";

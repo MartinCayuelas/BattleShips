@@ -7,6 +7,7 @@ public class Player {
 	private int score;
 	private ArrayList<Ship> flote;
 	private Grille maGrille;
+	private Grille maGrilleBateau;
 	
 	public Player(String nom){
 		name = nom;
@@ -42,6 +43,10 @@ public class Player {
 
 	public Grille getMaGrille() {
 		return maGrille;
+	}
+	
+	public Grille getMaGrilleBat() {
+		return maGrilleBateau;
 	}
 
 	@Override

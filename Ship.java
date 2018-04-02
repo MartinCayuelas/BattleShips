@@ -105,6 +105,12 @@ public class Ship {
 		}
 		return size;
 	}
+	
+	
+
+	public String[] getTabCoord() {
+		return tabCoord;
+	}
 
 	/***************** Code pour gérer le touché/coulé *******************/
 
