@@ -4,6 +4,7 @@ public class Ship {
 	int[] hitCoord;
 	String[] tabCoord; // tableau des coordonnées entières du bateau
 	boolean vertical;
+	String name;
 
 	public Ship(String start, String end) {
 
@@ -17,9 +18,8 @@ public class Ship {
 			partOneEnd = end.substring(0, 1); // End
 			partTwoEnd = end.substring(1, 2); // End
 
-			if (!partOneStart.equals(partOneEnd)
-					&& !partTwoStart.equals(partTwoEnd)) { // Bateau impossible
-															// à placer
+			if (!partOneStart.equals(partOneEnd) && !partTwoStart.equals(partTwoEnd)) { // Bateau impossible
+																						// à placer
 
 			} else {
 
@@ -39,8 +39,7 @@ public class Ship {
 					int j = Integer.parseInt(partTwoStart) + 1;
 					int i = 1;
 					tabCoord[0] = startCoord;
-					while (i < tabCoord.length
-							&& !tabCoord[i - 1].equals(endCoord)) {
+					while (i < tabCoord.length && !tabCoord[i - 1].equals(endCoord)) {
 
 						tabCoord[i] = partOneStart + j;
 
@@ -58,8 +57,7 @@ public class Ship {
 					l++;
 					int i = 1;
 					tabCoord[0] = startCoord;
-					while (i < tabCoord.length
-							&& !tabCoord[i - 1].equals(endCoord)) {
+					while (i < tabCoord.length && !tabCoord[i - 1].equals(endCoord)) {
 
 						tabCoord[i] = l + partTwoStart;
 						l++;
@@ -69,16 +67,24 @@ public class Ship {
 					hitCoord = new int[i];
 					for (int k = 0; k < hitCoord.length; k++) {
 						hitCoord[k] = 0;
-						
+
 					}
 				}
-				
-				
+
+				int taille = this.getSize();
+				if (taille == 2) {
+					this.name = "Destroyer";
+				} else if (taille == 4) {
+					name = "Battleship";
+				} else if (taille == 5) {
+					name = "Carrier";
+				} else {
+					this.name = "None";
+				}
 
 			}
 			/*
-			 * Pour savoir si le bateau est en position verticale ou en position
-			 * Horizontale
+			 * Pour savoir si le bateau est en position verticale ou en position Horizontale
 			 */
 
 		}
@@ -96,17 +102,23 @@ public class Ship {
 		return vertical;
 	}
 
+	public String getName() {
+		return name;
+	}
+
+	public void setName(String name) {
+		this.name = name;
+	}
+
 	public int getSize() {
 		int size = 0;
 		int i = 0;
-		while (i< tabCoord.length &&tabCoord[i] != null) {
+		while (i < tabCoord.length && tabCoord[i] != null) {
 			size++;
 			i++;
 		}
 		return size;
 	}
-	
-	
 
 	public String[] getTabCoord() {
 		return tabCoord;
@@ -137,27 +149,28 @@ public class Ship {
 	}
 
 	public int coordLeft(String h) {
-		int left=0;
+		int left = 0;
 		String partOne;
 		char c;
-		
+
 		partOne = h.substring(0, 1); // Start
 		c = partOne.charAt(0);
-		left = (int)c;
+		left = (int) c;
 		left = left - 65; // Pas 64 car le tableau commence à 0
 		return left;
 	}
-	
+
 	public int coordRight(String h) {
 		int right = 0;
 		String partTwo;
 		partTwo = h.substring(1, 2); // Start
 		right = Integer.parseInt(partTwo);
-		
-		right = right - 1; //Car le tableau commence à 0
-		
+
+		right = right - 1; // Car le tableau commence à 0
+
 		return right;
 	}
+
 	public boolean isDestroyed() {
 		int i = 0;
 		int cpt = 0;
@@ -185,6 +198,13 @@ public class Ship {
 		return cpt;
 
 	}
+
+	@Override
+	public String toString() {
+		return "[" + name + "]";
+	}
+	
+	
 	/*****************************************************************/
 
 }

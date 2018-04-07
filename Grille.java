@@ -3,8 +3,17 @@ public class Grille {
 
 	private int[][] grille;
 
-	public Grille() {
-
+	public Grille(int longueurM, int largeurM) {
+		int[][] maGrille = new int[longueurM][largeurM];
+		
+		for(int i = 0; i<maGrille.length; i++) {
+			for(int j = 0; j<maGrille[i].length;j++) {
+				
+				
+				maGrille[i][j] = 0;
+				
+			}
+		}/*
 		int[][] grille = { 
 				{ 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 },
 				{ 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 },
@@ -16,8 +25,8 @@ public class Grille {
 				{ 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 },
 				{ 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 },
 				{  0, 0, 0, 0, 0, 0, 0, 0, 0, 0 } };
-
-		this.grille = grille;
+	*/
+		this.grille = maGrille;
 	}
 
 	public int[][] getGrille() {
@@ -28,7 +37,18 @@ public class Grille {
 		grille[b][a] = 1;
 	}
 	
-	public void restartGrille() {
+	public void restartGrille(int longueurM, int largeurM) {
+		
+		int[][] maGrille = new int[longueurM][largeurM];
+		
+		for(int i = 0; i<maGrille.length; i++) {
+			for(int j = 0; j<maGrille[i].length;j++) {
+				
+				
+				maGrille[i][j] = 0;
+				
+			}
+		}/*
 		int[][] grille = { 
 				{ 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 },
 				{ 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 },
@@ -39,9 +59,9 @@ public class Grille {
 				{ 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 },
 				{ 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 },
 				{ 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 },
-				{  0, 0, 0, 0, 0, 0, 0, 0, 0, 0 } };
+				{  0, 0, 0, 0, 0, 0, 0, 0, 0, 0 } };*/
 
-		this.grille = grille;
+		this.grille = maGrille;
 	}
 	
 
@@ -50,13 +70,13 @@ public class Grille {
 		
 		int u = 0;
 		int w;
-		while (u < 10)
+		while (u < grille.length)
 
 		{
 
 		  w = 0;
 
-		  while(w < 10)
+		  while(w < grille[u].length)
 
 		  {
 
