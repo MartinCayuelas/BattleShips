@@ -6,7 +6,6 @@ public class Player {
 	private int score;
 	private ArrayList<Ship> flote;
 	private Grille maGrille;
-	private Grille maGrilleBateau;
 
 	int nbCarrier;
 	int nbCruiser;
@@ -51,9 +50,6 @@ public class Player {
 		return maGrille;
 	}
 
-	public Grille getMaGrilleBat() {
-		return maGrilleBateau;
-	}
 
 	/*************** Incrémentation nb Bateaux et vérifications ***********/
 
