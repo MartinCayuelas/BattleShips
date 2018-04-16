@@ -18,76 +18,90 @@ public class Ship {
 			partOneEnd = end.substring(0, 1); // End
 			partTwoEnd = end.substring(1, 2); // End
 
-			if (!partOneStart.equals(partOneEnd) && !partTwoStart.equals(partTwoEnd)) { // Bateau impossible
-																						// à placer
+			if (start.length() == 3) {
+				// Si le chiffre est > 9 (Pour A10 par exemple)
+				String partSupTen;
 
-			} else {
+				partSupTen = start.substring(2, 3); // Start Part2
+				partTwoStart = partTwoStart + partSupTen;
+			}
 
-				startCoord = start;
-				endCoord = end;
+			if (end.length() == 3) {
+				// Si le chiffre est > 9 (Pour A10 par exemple)
+				String partSupTen;
 
-				if (partOneStart.equals(partOneEnd)) {
-					vertical = true;
-
-				} else {
-					vertical = false;
-
-				}
-
-				tabCoord = new String[5];
-				if (vertical == true) {
-					int j = Integer.parseInt(partTwoStart) + 1;
-					int i = 1;
-					tabCoord[0] = startCoord;
-					while (i < tabCoord.length && !tabCoord[i - 1].equals(endCoord)) {
-
-						tabCoord[i] = partOneStart + j;
-
-						j++;
-						i++;
-
-					}
-					hitCoord = new int[i];
-					for (int k = 0; k < hitCoord.length; k++) {
-						hitCoord[k] = 0;
-					}
-
-				} else {
-					char l = partOneStart.charAt(0);
-					l++;
-					int i = 1;
-					tabCoord[0] = startCoord;
-					while (i < tabCoord.length && !tabCoord[i - 1].equals(endCoord)) {
-
-						tabCoord[i] = l + partTwoStart;
-						l++;
-						i++;
-
-					}
-					hitCoord = new int[i];
-					for (int k = 0; k < hitCoord.length; k++) {
-						hitCoord[k] = 0;
-
-					}
-				}
-
-				int taille = this.getSize();
-				if (taille == 2) {
-					this.name = "Destroyer";
-				} else if (taille == 4) {
-					name = "Battleship";
-				} else if (taille == 5) {
-					name = "Carrier";
-				} else {
-					this.name = "None";
-				}
+				partSupTen = end.substring(2, 3); // End PART 2
+				partTwoEnd = partTwoEnd + partSupTen;
 
 			}
-			/*
-			 * Pour savoir si le bateau est en position verticale ou en position Horizontale
-			 */
+
+			startCoord = start;
+			endCoord = end;
+
+			if (partOneStart.equals(partOneEnd)) {
+				vertical = true;
+
+			} else {
+				vertical = false;
+
+			}
+
+			tabCoord = new String[5];
+			if (vertical == true) { // vertical
+				// On change le chiffre
+				int j = Integer.parseInt(partTwoStart) + 1;
+				int i = 1;
+				tabCoord[0] = startCoord;
+				while (i < tabCoord.length && !tabCoord[i - 1].equals(endCoord)) {
+
+					tabCoord[i] = partOneStart + j;
+
+					j++;
+					i++;
+
+				}
+				hitCoord = new int[i];
+				for (int k = 0; k < hitCoord.length; k++) {
+					hitCoord[k] = 0;
+				}
+
+			} else { // horizontal
+				// On change donc la Lettre
+				char l = partOneStart.charAt(0);
+				l++;
+				int i = 1;
+				tabCoord[0] = startCoord;
+				while (i < tabCoord.length && !tabCoord[i - 1].equals(endCoord)) {
+
+					tabCoord[i] = l + partTwoStart;
+					l++;
+					i++;
+
+				}
+
+				hitCoord = new int[i];
+				for (int k = 0; k < hitCoord.length; k++) {
+					hitCoord[k] = 0;
+
+				}
+			}
+
+			int taille = this.getSize();
+			if (taille == 2) {
+				this.name = "Destroyer";
+			} else if (taille == 4) {
+				name = "Battleship";
+			} else if (taille == 5) {
+				name = "Carrier";
+			} else {
+				this.name = "None";
+			}
 
 		}
+		/*
+		 * Pour savoir si le bateau est en position verticale ou en position Horizontale
+		 */
+
 	}
 
 	public String getStartCoord() {
@@ -122,6 +136,41 @@ public class Ship {
 
 	public String[] getTabCoord() {
 		return tabCoord;
+	}
+
+	public boolean isDiagonal(String start, String end) {
+		boolean diagonal = false;
+		String partOneStart;
+		String partTwoStart;
+		String partOneEnd;
+		String partTwoEnd;
+		partOneStart = start.substring(0, 1); // Start
+		partTwoStart = start.substring(1, 2); // Start
+		partOneEnd = end.substring(0, 1); // End
+		partTwoEnd = end.substring(1, 2); // End
+
+		if (start.length() == 3) {
+			// Si le chiffre est > 9 (Pour A10 par exemple)
+			String partSupTen;
+
+			partSupTen = start.substring(2, 3); // Start Part2
+			partTwoStart = partTwoStart + partSupTen;
+		}
+
+		if (end.length() == 3) {
+			// Si le chiffre est > 9 (Pour A10 par exemple)
+			String partSupTen;
+
+			partSupTen = end.substring(2, 3); // End PART 2
+			partTwoEnd = partTwoEnd + partSupTen;
+
+		}
+
+		if (!partOneStart.equals(partOneEnd) && !partTwoStart.equals(partTwoEnd)) { // Bateau impossible
+			diagonal = true; // à placer
+
+		}
+		return diagonal;
 	}
 
 	/***************** Code pour gérer le touché/coulé *******************/
@@ -164,6 +213,15 @@ public class Ship {
 		int right = 0;
 		String partTwo;
 		partTwo = h.substring(1, 2); // Start
+
+		if (h.length() == 3) {
+			// Si le chiffre est > 9 (Pour A10 par exemple)
+			String partSupTen;
+
+			partSupTen = h.substring(2, 3); // Start Part2
+			partTwo = partTwo + partSupTen;
+		}
+
 		right = Integer.parseInt(partTwo);
 
 		right = right - 1; // Car le tableau commence à 0
@@ -185,7 +243,7 @@ public class Ship {
 		return cpt == this.getSize();
 	}
 
-	public int getHitNumber() {
+	public int getHitNumber() { // Parcours du tableau pour compter le nombre de cases touchées
 		int i = 0;
 		int cpt = 0;
 		while (i < hitCoord.length) {
@@ -199,12 +257,13 @@ public class Ship {
 
 	}
 
+	/***************************************************************/
+
 	@Override
 	public String toString() {
 		return "[" + name + "]";
 	}
-	
-	
+
 	/*****************************************************************/
 
 }

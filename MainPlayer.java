@@ -4,13 +4,42 @@ public class MainPlayer {
 
 	public static void main(String[] args) {
 
-		System.out.println("Entrez une longueur de matrice");
-		Scanner lg = new Scanner(System.in);
-		int longueur = lg.nextInt();
+		boolean lgOk = false;
+		boolean lrgOk = false;
+		int longueur = 10;
+		int largeur = 10;
 
-		System.out.println("Entrez une largeur de matrice");
-		Scanner lrg = new Scanner(System.in);
-		int largeur = lrg.nextInt();
+		Grille grilleVerif = new Grille();
+		while (!lgOk) {
+			System.out.println("Entrez une longueur de matrice");
+			Scanner lg = new Scanner(System.in);
+
+			try {
+				longueur = lg.nextInt();
+				boolean autorise = grilleVerif.verifInt(longueur);
+				if (autorise) {
+					lgOk = true;
+				}
+
+			} catch (Exception e) {
+				System.out.println("Entrez un chiffre");
+			}
+		}
+		while (!lrgOk) {
+			System.out.println("Entrez une largeur de matrice");
+			Scanner lrg = new Scanner(System.in);
+
+			try {
+				largeur = lrg.nextInt();
+				boolean autorise = grilleVerif.verifInt(largeur);
+				if (autorise) {
+					lrgOk = true;
+				}
+
+			} catch (Exception e) {
+				System.out.println("Entrez un chiffre");
+			}
+		}
 
 		System.out.println("Entrez votre nom (J1)");
 		Scanner sc = new Scanner(System.in);
@@ -20,7 +49,7 @@ public class MainPlayer {
 
 		System.out.println("Entrez votre nom (J2)");
 		Scanner sc2 = new Scanner(System.in);
-		String name2 = sc.nextLine();
+		String name2 = sc2.nextLine();
 
 		Player player2 = new Player(name2);
 
@@ -35,27 +64,65 @@ public class MainPlayer {
 		while (i < 5) {
 			boolean ajoute = false;
 			while (!ajoute) {
-				Scanner sc3 = new Scanner(System.in);
-				System.out.println("Veuillez saisir une coordonnée de début :");
-				String start = sc3.nextLine();
-				System.out.println("Vous avez saisi : " + start);
+				String start = "";
+				String end = "";
+				boolean diagonal = true; // Bonne forme de coordonnée, pas en diagonale
+				Ship ship = new Ship("A1", "A2");
+				while (diagonal) { // Tant que le bateau est en diagonale on loop
+					boolean coordOk = false;
+					while (!coordOk) {
+						Scanner sc3 = new Scanner(System.in);
+						System.out.println("Veuillez saisir une coordonnée de début :");
+						start = sc3.nextLine();
+						if (start.length() > 1) {
+							coordOk = grilleVerif.tirCorrect(start);
+							System.out.println("Vous avez saisi : " + start);
+						}
 
-				Scanner sc4 = new Scanner(System.in);
-				System.out.println("Veuillez saisir une coordonnée de fin :");
-				String end = sc4.nextLine();
-				System.out.println("Vous avez saisi : " + end);
+					} // Fin Coordonnée de Début
+					coordOk = false;
+					while (!coordOk) {
+						Scanner sc4 = new Scanner(System.in);
+						System.out.println("Veuillez saisir une coordonnée de fin :");
+						end = sc4.nextLine();
+						if (end.length() > 1) {
+							coordOk = grilleVerif.tirCorrect(end);
+							System.out.println("Vous avez saisi : " + end);
+						}
+					} // Fin Coordonnée de Fin
+					diagonal = ship.isDiagonal(start, end);
+					if (diagonal) {
+						System.out.println("Bateau en diagonale!");
+					}
+				}
 
 				Ship s = new Ship(start, end);
 
 				System.out.println("Vous avez crée un bateau de taille : " + s.getSize());
+
 				if (s.getSize() == 3) {
-					System.out.println("Vous voulez un Submarine (Tapez 1) ou un Cruiser(Tapez 2)?");
-					Scanner type = new Scanner(System.in);
-					int bateau = type.nextInt();
-					if (bateau == 1) {
-						s.setName("Submarine");
-					} else {
-						s.setName("Cruiser");
+					boolean chiffreBon = false;
+					while (!chiffreBon) {
+						System.out.println("Vous voulez un Submarine (Tapez 1) ou un Cruiser(Tapez 2)?");
+						Scanner type = new Scanner(System.in);
+						int bateau = 0;
+						try {
+							bateau = type.nextInt();
+
+							if (bateau == 1) {
+								s.setName("Submarine");
+								chiffreBon = true;
+							} else if (bateau == 2) {
+								s.setName("Cruiser");
+								chiffreBon = true;
+							} else {
+								chiffreBon = false;
+								System.out.println("Entrez un chiffre entre 1 et 2");
+							}
+						} catch (Exception e) {
+							chiffreBon = false;
+							System.out.println("Entrez un chiffre entre 1 et 2, pas autre chose");
+						}
 					}
 				}
 				System.out.println("Vous avez choisi :" + s.getName());
@@ -86,11 +153,11 @@ public class MainPlayer {
 					/**** Partie Affichage Données du Joueur ******/
 					System.out.println("Bateau n° " + i);
 
-					System.out.println("Carriers: " + player1.getNbCarrier());
-					System.out.println("Cruisers: " + player1.getNbCruiser());
-					System.out.println("Battleships: " + player1.getNbBattleship());
-					System.out.println("Destroyers: " + player1.getNbDestroyer());
-					System.out.println("Submarines: " + player1.getNbSubmarine());
+					System.out.println("Carriers (Taille 5): " + player1.getNbCarrier());
+					System.out.println("Cruisers (Taille 3): " + player1.getNbCruiser());
+					System.out.println("Battleships (Taille 4): " + player1.getNbBattleship());
+					System.out.println("Destroyers (Taille 2): " + player1.getNbDestroyer());
+					System.out.println("Submarines (Taille 3): " + player1.getNbSubmarine());
 
 					/**** Partie Affichage Grille du Joueur ******/
 					for (int z = 0; z < s.getSize(); z++) {
@@ -112,11 +179,11 @@ public class MainPlayer {
 						System.out.println("Vous avez atteint le nombre limite de " + s.getName() + "s");
 						System.out.println("Choississez un autre type de bateau --------------");
 					}
-					System.out.println("Carriers: " + player1.getNbCarrier());
-					System.out.println("Cruisers: " + player1.getNbCruiser());
-					System.out.println("Battleships: " + player1.getNbBattleship());
-					System.out.println("Destroyers: " + player1.getNbDestroyer());
-					System.out.println("Submarines: " + player1.getNbSubmarine());
+					System.out.println("Carriers (Taille 5): " + player1.getNbCarrier());
+					System.out.println("Cruisers (Taille 3): " + player1.getNbCruiser());
+					System.out.println("Battleships (Taille 4): " + player1.getNbBattleship());
+					System.out.println("Destroyers (Taille 2): " + player1.getNbDestroyer());
+					System.out.println("Submarines (Taille 3): " + player1.getNbSubmarine());
 					ajoute = false;
 				}
 
@@ -128,26 +195,67 @@ public class MainPlayer {
 		while (j < 5) {
 			boolean ajoute = false;
 			while (!ajoute) {
-				Scanner sc3 = new Scanner(System.in);
-				System.out.println("Veuillez saisir une coordonnée de début :");
-				String start = sc3.nextLine();
-				System.out.println("Vous avez saisi : " + start);
+				String start = "";
+				String end = "";
 
-				Scanner sc4 = new Scanner(System.in);
-				System.out.println("Veuillez saisir une coordonnée de fin :");
-				String end = sc4.nextLine();
-				System.out.println("Vous avez saisi : " + end);
+				boolean diagonal = true; // Bonne forme de coordonnée, pas en diagonale
+				Ship ship = new Ship("A1", "A2");
+
+				while (diagonal) { // Tant que le bateau est en diagonale on loop
+					boolean coordOk = false;
+					while (!coordOk) {
+						Scanner sc3 = new Scanner(System.in);
+						System.out.println("Veuillez saisir une coordonnée de début :");
+						start = sc3.nextLine();
+						if (start.length() > 1) {
+							coordOk = grilleVerif.tirCorrect(start);
+							System.out.println("Vous avez saisi : " + start);
+						}
+
+					} // Fin Coordonnée de Début
+					coordOk = false;
+					while (!coordOk) {
+						Scanner sc4 = new Scanner(System.in);
+						System.out.println("Veuillez saisir une coordonnée de fin :");
+						end = sc4.nextLine();
+						if (end.length() > 1) {
+							coordOk = grilleVerif.tirCorrect(end);
+							System.out.println("Vous avez saisi : " + end);
+						}
+					} // Fin Coordonnée de Fin
+
+					diagonal = ship.isDiagonal(start, end);
+					if (diagonal) {
+						System.out.println("Bateau en diagonale!");
+					}
+				}
 
 				Ship s = new Ship(start, end);
 				System.out.println("Vous avez crée un bateau de taille : " + s.getSize());
+
 				if (s.getSize() == 3) {
-					System.out.println("Vous voulez un Submarine (Tapez 1) ou un Cruiser(Tapez 2)?");
-					Scanner type = new Scanner(System.in);
-					int bateau = type.nextInt();
-					if (bateau == 1) {
-						s.setName("Submarine");
-					} else {
-						s.setName("Cruiser");
+					boolean chiffreBon = false;
+					while (!chiffreBon) {
+						System.out.println("Vous voulez un Submarine (Tapez 1) ou un Cruiser(Tapez 2)?");
+						Scanner type = new Scanner(System.in);
+						int bateau = 0;
+						try {
+							bateau = type.nextInt();
+
+							if (bateau == 1) {
+								s.setName("Submarine");
+								chiffreBon = true;
+							} else if (bateau == 2) {
+								s.setName("Cruiser");
+								chiffreBon = true;
+							} else {
+								chiffreBon = false;
+								System.out.println("Entrez un chiffre entre 1 et 2");
+							}
+						} catch (Exception e) {
+							chiffreBon = false;
+							System.out.println("Entrez un chiffre entre 1 et 2, pas autre chose");
+						}
 					}
 				}
 				System.out.println("Vous avez choisi :" + s.getName());
@@ -177,11 +285,11 @@ public class MainPlayer {
 					/**** Partie Affichage Données du Joueur ******/
 					System.out.println("Bateau n° " + j);
 
-					System.out.println("Carriers: " + player2.getNbCarrier());
-					System.out.println("Cruisers: " + player2.getNbCruiser());
-					System.out.println("Battleships: " + player2.getNbBattleship());
-					System.out.println("Destroyers: " + player2.getNbDestroyer());
-					System.out.println("Submarines: " + player2.getNbSubmarine());
+					System.out.println("Carriers (Taille 5): " + player2.getNbCarrier());
+					System.out.println("Cruisers (Taille 3): " + player2.getNbCruiser());
+					System.out.println("Battleships (Taille 4): " + player2.getNbBattleship());
+					System.out.println("Destroyers (Taille 2): " + player2.getNbDestroyer());
+					System.out.println("Submarines (Taille 3): " + player2.getNbSubmarine());
 
 					/**** Partie Affichage Grille du Joueur ******/
 					for (int z = 0; z < s.getSize(); z++) {
@@ -203,11 +311,11 @@ public class MainPlayer {
 						System.out.println("Vous avez atteint le nombre limite de " + s.getName() + "s");
 						System.out.println("Choississez un autre type de bateau --------------");
 					}
-					System.out.println("Carriers: " + player2.getNbCarrier());
-					System.out.println("Cruisers: " + player2.getNbCruiser());
-					System.out.println("Battleships: " + player2.getNbBattleship());
-					System.out.println("Destroyers: " + player2.getNbDestroyer());
-					System.out.println("Submarines: " + player2.getNbSubmarine());
+					System.out.println("Carriers (Taille 5): " + player2.getNbCarrier());
+					System.out.println("Cruisers (Taille 3): " + player2.getNbCruiser());
+					System.out.println("Battleships (Taille 4): " + player2.getNbBattleship());
+					System.out.println("Destroyers (Taille 2): " + player2.getNbDestroyer());
+					System.out.println("Submarines (Taille 3): " + player2.getNbSubmarine());
 					ajoute = false;
 				}
 
@@ -237,33 +345,57 @@ public class MainPlayer {
 						+ "I" + "" + "J");
 				System.out.println(player1.getMaGrille().toString());
 
-				Scanner tir = new Scanner(System.in);
-				System.out.println("Veuillez saisir une coordonnée de tir (J1) :");
-				String tir1 = tir.nextLine();
+				boolean tirOk = false;
+				String tir1 = "";
+				while (!tirOk) {
+					Scanner tir = new Scanner(System.in);
+					System.out.println("Veuillez saisir une coordonnée de tir (J1) :");
+					tir1 = tir.nextLine();
+					tirOk = grilleVerif.tirCorrect(tir1);
+				}
 
 				System.out.println("missile  -------------" + tir1);
+				boolean touche = false;
+				boolean destroyed = false;
+				Ship shipDelete = null;
 				for (Ship s1 : player2.getFlote()) {
 
 					if (s1.isHit(tir1)) {
-						System.out.println("Touché");
+						touche = true;
+						// System.out.println("Touché");
 						int a = s1.coordLeft(tir1);
 						int b = s1.coordRight(tir1);
 						player1.getMaGrille().setGrille(a, b);
 						if (s1.isDestroyed()) {
-							System.out.println("Coulé");
-							player2.getFlote().remove(s1);
-							System.out.println(player2.getFlote().size());
-							int score = player1.getScore() + 1;
-							player1.setScore(score);
+							// System.out.println("Coulé");
+							shipDelete = s1;
+							destroyed = true;
+							// player2.getFlote().remove(s1);
+							// System.out.println("Il reste " + player2.getFlote().size() + " bateaux à
+							// couler");
+							// int score = player1.getScore() + 1;
+							// player1.setScore(score);
+							// System.out.println("Porbleme ici");
 
 						} else {
 							System.out.println("Pas coulé");
 						}
-						break;
-					} else {
-						System.out.println("Raté");
 					}
 				}
+				if (touche) {
+					System.out.println("Touché");
+				} else {
+					System.out.println("Raté");
+				}
+				if (destroyed) {
+					System.out.println("Coulé");
+					player2.getFlote().remove(shipDelete);
+					System.out.println("Il reste " + player2.getFlote().size() + " bateaux à couler");
+					int score = player1.getScore() + 1;
+					player1.setScore(score);
+
+				}
+
 				System.out.println("------------Changement de tour--------------");
 				tour = false; // changement de joueur
 			} else {
@@ -274,32 +406,54 @@ public class MainPlayer {
 						+ "I" + "" + "J");
 				System.out.println(player2.getMaGrille().toString());
 
-				Scanner tir = new Scanner(System.in);
-				System.out.println("Veuillez saisir une coordonnée de tir (J2):");
-				String tir1 = tir.nextLine();
-
+				boolean tirOk = false;
+				String tir1 = "";
+				while (!tirOk) {
+					Scanner tir = new Scanner(System.in);
+					System.out.println("Veuillez saisir une coordonnée de tir (J2) :");
+					tir1 = tir.nextLine();
+					tirOk = grilleVerif.tirCorrect(tir1);
+				}
 				System.out.println("missile -------------" + tir1);
+				boolean touche = false;
+				Ship shipDelete = null;
+
+				boolean destroyed = false;
 				for (Ship s1 : player1.getFlote()) {
 
 					if (s1.isHit(tir1)) {
-						System.out.println("Touché");
+						touche = true;
+						// System.out.println("Touché");
 						int a = s1.coordLeft(tir1);
 						int b = s1.coordRight(tir1);
 						player2.getMaGrille().setGrille(a, b);
 						if (s1.isDestroyed()) {
-							System.out.println("Coulé");
-							player1.getFlote().remove(s1);
-							System.out.println(player1.getFlote().size());
-							int score = player2.getScore() + 1;
-							player2.setScore(score);
+							// System.out.println("Coulé");
+							shipDelete = s1;
+							destroyed = true;
+							// player1.getFlote().remove(s1);
+							// System.out.println("Il reste " + player1.getFlote().size() + " bateaux à
+							// couler");
+							// int score = player2.getScore() + 1;
+							// player2.setScore(score);
 
 						} else {
 							System.out.println("Pas coulé");
 						}
-						break;
-					} else {
-						System.out.println("Raté");
+
 					}
+				}
+				if (touche) {
+					System.out.println("Touché");
+				} else {
+					System.out.println("Raté");
+				}
+				if (destroyed) {
+					System.out.println("Coulé");
+					player1.getFlote().remove(shipDelete);
+					System.out.println("Il reste " + player1.getFlote().size() + " bateaux à couler");
+					int score = player2.getScore() + 1;
+					player2.setScore(score);
 				}
 
 				System.out.println("------------Changement de tour--------------");
