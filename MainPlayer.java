@@ -125,9 +125,8 @@ public class MainPlayer {
 						}
 					}
 				}
-				System.out.println("Vous avez choisi :" + s.getName());
+				System.out.println("Vous avez choisi : " + s.getName());
 				boolean chevauchement = player1.verificationChevauchement(s);
-
 				boolean okAjout = player1.verificationAjout(s.getName());
 
 				if (okAjout && !chevauchement) {
@@ -258,7 +257,7 @@ public class MainPlayer {
 						}
 					}
 				}
-				System.out.println("Vous avez choisi :" + s.getName());
+				System.out.println("Vous avez choisi : " + s.getName());
 				boolean okAjout = player2.verificationAjout(s.getName());
 				boolean chevauchement = player2.verificationChevauchement(s);
 
