@@ -5,6 +5,10 @@ public class Ship {
 	String[] tabCoord; // tableau des coordonnées entières du bateau
 	boolean vertical;
 	String name;
+	
+	public Ship() {
+		
+	}
 
 	public Ship(String start, String end) {
 
@@ -72,7 +76,7 @@ public class Ship {
 				int i = 1;
 				tabCoord[0] = startCoord;
 				while (i < tabCoord.length && !tabCoord[i - 1].equals(endCoord)) {
-
+					
 					tabCoord[i] = l + partTwoStart;
 					l++;
 					i++;

@@ -1,19 +1,19 @@
 
 public class Grille {
 
-	private int[][] grille;
+	private String[][] grille;
 
 	public Grille() {
 
 	}
 
 	public Grille(int longueurM, int largeurM) {
-		int[][] maGrille = new int[longueurM][largeurM];
+		String[][] maGrille = new String[longueurM][largeurM];
 
 		for (int i = 0; i < maGrille.length; i++) {
 			for (int j = 0; j < maGrille[i].length; j++) {
 
-				maGrille[i][j] = 0;
+				maGrille[i][j] = "-";
 
 			}
 		} /*
@@ -26,22 +26,24 @@ public class Grille {
 		this.grille = maGrille;
 	}
 
-	public int[][] getGrille() {
+	public String[][] getGrille() {
 		return grille;
 	}
 
-	public void setGrille(int a, int b) {
-		grille[b][a] = 1;
+	public void setGrille(int a, int b, String typeCase) { //typeCa = 1 ou typeCase = 2
+		//Si bateau touché alors 1 si raté = 2
+		grille[b][a] = typeCase;
+
 	}
 
 	public void restartGrille(int longueurM, int largeurM) {
 
-		int[][] maGrille = new int[longueurM][largeurM];
+		String[][] maGrille = new String[longueurM][largeurM];
 
 		for (int i = 0; i < maGrille.length; i++) {
 			for (int j = 0; j < maGrille[i].length; j++) {
 
-				maGrille[i][j] = 0;
+				maGrille[i][j] = "-";
 
 			}
 		} /*
@@ -57,6 +59,18 @@ public class Grille {
 
 	public String toString() {
 		String str = "";
+		String lettres ="	";
+		String letter = "A";
+		char l = letter.charAt(0);
+		int cpt = 0;
+		while(cpt<10) {
+			lettres += ""+l+"\t"; 
+			l++; //On change la lettre
+			cpt++;
+		}
+		
+		str += lettres+"\n";
+		
 
 		int u = 0;
 		int w;
@@ -65,12 +79,13 @@ public class Grille {
 		{
 
 			w = 0;
+			str += (u+1)+"	";
 
 			while (w < grille[u].length)
 
 			{
 
-				str += "" + grille[u][w] + "";
+				str += "" + grille[u][w]+ "\t";
 
 				w++;
 

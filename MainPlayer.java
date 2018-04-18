@@ -57,6 +57,8 @@ public class MainPlayer {
 		System.out.println("Nom J2 : " + player2.getName());
 		player1.getMaGrille().restartGrille(longueur, largeur);
 		player2.getMaGrille().restartGrille(longueur, largeur);
+		
+		
 
 		System.out.println("---------------------------Initialisation---------------------");
 		System.out.println("--J1--" + player1.getName());
@@ -164,12 +166,11 @@ public class MainPlayer {
 						int a = s.coordLeft(s.getTabCoord()[z]);
 						int b = s.coordRight(s.getTabCoord()[z]);
 
-						player1.getMaGrille().setGrille(a, b);
+						player1.getMaGrille().setGrille(a, b, "S");
 
 					}
 
-					System.out.println("A" + "" + "B" + "" + "C" + "" + "D" + "" + "E" + "" + "F" + "" + "G" + "" + "H"
-							+ "" + "I" + "" + "J");
+					
 					System.out.println(player1.getMaGrille().toString());
 				} else {
 					if (chevauchement) {
@@ -296,12 +297,10 @@ public class MainPlayer {
 						int a = s.coordLeft(s.getTabCoord()[z]);
 						int b = s.coordRight(s.getTabCoord()[z]);
 
-						player2.getMaGrille().setGrille(a, b);
+						player2.getMaGrille().setGrille(a, b, "S");
 
 					}
 
-					System.out.println("A" + "" + "B" + "" + "C" + "" + "D" + "" + "E" + "" + "F" + "" + "G" + "" + "H"
-							+ "" + "I" + "" + "J");
 					System.out.println(player2.getMaGrille().toString());
 				} else {
 					if (chevauchement) {
@@ -325,6 +324,11 @@ public class MainPlayer {
 		System.out.println(player2.getFlote());
 
 		System.out.println("---------Début de la partie-----------");
+		
+		System.out.println("Les indications : ");
+		System.out.println(" -  -> Eau (possiblement)");
+		System.out.println(" X -> Touché");
+		System.out.println(" R -> Raté");
 
 		player1.getMaGrille().restartGrille(longueur, largeur);// remise à zero de la grille
 		player2.getMaGrille().restartGrille(longueur, largeur);
@@ -356,15 +360,21 @@ public class MainPlayer {
 				System.out.println("missile  -------------" + tir1);
 				boolean touche = false;
 				boolean destroyed = false;
-				Ship shipDelete = null;
+				Ship shipDelete = new Ship();
+				// Bateau fictif pour les vérifications +
+				// variable pour supprimer un bateau si jamais il est coulé
+				int a = shipDelete.coordLeft(tir1);
+				int b = shipDelete.coordRight(tir1);// On enregistre les coordonnées du tir
+				// Si jamais aucun bateau n'est touché on peut dire que la position de tir est
+				// ratée
 				for (Ship s1 : player2.getFlote()) {
 
 					if (s1.isHit(tir1)) {
 						touche = true;
 						// System.out.println("Touché");
-						int a = s1.coordLeft(tir1);
-						int b = s1.coordRight(tir1);
-						player1.getMaGrille().setGrille(a, b);
+						// int a = s1.coordLeft(tir1);
+						// int b = s1.coordRight(tir1);
+						player1.getMaGrille().setGrille(a, b, "X");
 						if (s1.isDestroyed()) {
 							// System.out.println("Coulé");
 							shipDelete = s1;
@@ -374,7 +384,7 @@ public class MainPlayer {
 							// couler");
 							// int score = player1.getScore() + 1;
 							// player1.setScore(score);
-							// System.out.println("Porbleme ici");
+							// System.out.println("Probleme ici");
 
 						} else {
 							System.out.println("Pas coulé");
@@ -385,6 +395,7 @@ public class MainPlayer {
 					System.out.println("Touché");
 				} else {
 					System.out.println("Raté");
+					player1.getMaGrille().setGrille(a, b, "R");
 				}
 				if (destroyed) {
 					System.out.println("Coulé");
@@ -401,8 +412,6 @@ public class MainPlayer {
 				// Tour du Joueur 2
 				System.out.println("Player (J2) : " + player2.getName());
 				System.out.println("Grille : -------------------------------");
-				System.out.println("A" + "" + "B" + "" + "C" + "" + "D" + "" + "E" + "" + "F" + "" + "G" + "" + "H" + ""
-						+ "I" + "" + "J");
 				System.out.println(player2.getMaGrille().toString());
 
 				boolean tirOk = false;
@@ -415,17 +424,27 @@ public class MainPlayer {
 				}
 				System.out.println("missile -------------" + tir1);
 				boolean touche = false;
-				Ship shipDelete = null;
+				Ship shipDelete = new Ship();
 
 				boolean destroyed = false;
+				
+				//Ship shipDelete = new Ship();
+				// Bateau fictif pour les vérifications +
+				// variable pour supprimer un bateau si jamais il est coulé
+				int a = shipDelete.coordLeft(tir1);
+				int b = shipDelete.coordRight(tir1);// On enregistre les coordonnées du tir
+				// Si jamais aucun bateau n'est touché on peut dire que la position de tir est
+				// ratée
+				
+				
 				for (Ship s1 : player1.getFlote()) {
 
 					if (s1.isHit(tir1)) {
 						touche = true;
 						// System.out.println("Touché");
-						int a = s1.coordLeft(tir1);
-						int b = s1.coordRight(tir1);
-						player2.getMaGrille().setGrille(a, b);
+						//int a = s1.coordLeft(tir1);
+						//int b = s1.coordRight(tir1);
+						player2.getMaGrille().setGrille(a, b, "X");
 						if (s1.isDestroyed()) {
 							// System.out.println("Coulé");
 							shipDelete = s1;
@@ -446,6 +465,7 @@ public class MainPlayer {
 					System.out.println("Touché");
 				} else {
 					System.out.println("Raté");
+					player2.getMaGrille().setGrille(a, b, "R");
 				}
 				if (destroyed) {
 					System.out.println("Coulé");
@@ -467,6 +487,9 @@ public class MainPlayer {
 		} else {
 			System.out.println("Gagnant : " + player2.getName());
 		}
+		
+		System.out.println("Score de "+player1.getName()+" : "+player1.getScore());
+		System.out.println("Score de "+player2.getName()+" : "+player2.getScore());
 
 	}
 
