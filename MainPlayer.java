@@ -67,7 +67,7 @@ public class MainPlayer {
 				String start = "";
 				String end = "";
 				boolean diagonal = true; // Bonne forme de coordonnée, pas en diagonale
-				Ship ship = new Ship("A1", "A2");
+				Ship ship = new Ship("A1", "A2"); // Bateau fictif pour tester
 				while (diagonal) { // Tant que le bateau est en diagonale on loop
 					boolean coordOk = false;
 					while (!coordOk) {
@@ -75,7 +75,7 @@ public class MainPlayer {
 						System.out.println("Veuillez saisir une coordonnée de début :");
 						start = sc3.nextLine();
 						if (start.length() > 1) {
-							coordOk = grilleVerif.tirCorrect(start);
+							coordOk = grilleVerif.coordCorrect(start);
 							System.out.println("Vous avez saisi : " + start);
 						}
 
@@ -86,7 +86,7 @@ public class MainPlayer {
 						System.out.println("Veuillez saisir une coordonnée de fin :");
 						end = sc4.nextLine();
 						if (end.length() > 1) {
-							coordOk = grilleVerif.tirCorrect(end);
+							coordOk = grilleVerif.coordCorrect(end);
 							System.out.println("Vous avez saisi : " + end);
 						}
 					} // Fin Coordonnée de Fin
@@ -208,7 +208,7 @@ public class MainPlayer {
 						System.out.println("Veuillez saisir une coordonnée de début :");
 						start = sc3.nextLine();
 						if (start.length() > 1) {
-							coordOk = grilleVerif.tirCorrect(start);
+							coordOk = grilleVerif.coordCorrect(start);
 							System.out.println("Vous avez saisi : " + start);
 						}
 
@@ -219,7 +219,7 @@ public class MainPlayer {
 						System.out.println("Veuillez saisir une coordonnée de fin :");
 						end = sc4.nextLine();
 						if (end.length() > 1) {
-							coordOk = grilleVerif.tirCorrect(end);
+							coordOk = grilleVerif.coordCorrect(end);
 							System.out.println("Vous avez saisi : " + end);
 						}
 					} // Fin Coordonnée de Fin
@@ -351,7 +351,7 @@ public class MainPlayer {
 					Scanner tir = new Scanner(System.in);
 					System.out.println("Veuillez saisir une coordonnée de tir (J1) :");
 					tir1 = tir.nextLine();
-					tirOk = grilleVerif.tirCorrect(tir1);
+					tirOk = grilleVerif.coordCorrect(tir1);
 				}
 
 				System.out.println("missile  -------------" + tir1);
@@ -412,7 +412,7 @@ public class MainPlayer {
 					Scanner tir = new Scanner(System.in);
 					System.out.println("Veuillez saisir une coordonnée de tir (J2) :");
 					tir1 = tir.nextLine();
-					tirOk = grilleVerif.tirCorrect(tir1);
+					tirOk = grilleVerif.coordCorrect(tir1);
 				}
 				System.out.println("missile -------------" + tir1);
 				boolean touche = false;

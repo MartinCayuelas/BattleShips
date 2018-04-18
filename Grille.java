@@ -98,22 +98,22 @@ public class Grille {
 		return ok;
 	}
 
-	/********** Verification Tir coordonnées *************/
+	/********** Verification coord coordonnées *************/
 
-	boolean tirCorrect(String tir) {
-		boolean tirOk = false;
+	boolean coordCorrect(String coord) {
+		boolean coordOk = false;
 
-		String tab[] = { "A", "B", "C", "D", "E", "F", "G", "H", "I", "J", "K", "L", "M", "N", "O" };
-
+		//String tab[] = { "A", "B", "C", "D", "E", "F", "G", "H", "I", "J", "K", "L", "M", "N", "O" };
+		String tab[] = { "A", "B", "C", "D", "E", "F", "G", "H", "I", "J"};
 		String partOne;
 		String partTwo;
 
-		partOne = tir.substring(0, 1); // Debut
-		partTwo = tir.substring(1, 2); // end
+		partOne = coord.substring(0, 1); // Debut
+		partTwo = coord.substring(1, 2); // end
 
-		if (tir.length() == 3) {
+		if (coord.length() == 3) {
 			String partThree;
-			partThree = tir.substring(2, 3);
+			partThree = coord.substring(2, 3);
 			partTwo += partThree;
 		}
 		int i = 0;
@@ -129,7 +129,7 @@ public class Grille {
 		try {
 			right = Integer.parseInt(partTwo);
 
-			if (right > 0 && right <= 15) {
+			if (right > 0 && right <= 10) {
 				partTwoOk = true;
 
 			}
@@ -138,10 +138,10 @@ public class Grille {
 		}
 
 		if (partOneOk && partTwoOk) {
-			tirOk = true;
+			coordOk = true;
 		}
 
-		return tirOk;
+		return coordOk;
 
 	}
 
