@@ -32,8 +32,10 @@ public class MainPlayer {
 		System.out.println(" ⛴ -> Touché");
 		System.out.println(" X -> Raté");
 
-		player1.getMaGrille().restartGrille(10, 10);// remise à zero de la grille
-		player2.getMaGrille().restartGrille(10, 10);// Pour "contenir" les positions tirées
+		player1.getMyCoords().clear();
+		player2.getMyCoords().clear();
+		//player1.getMaGrille().restartGrille(10, 10);// remise à zero de la grille
+		//player2.getMaGrille().restartGrille(10, 10);// Pour "contenir" les positions tirées
 
 		boolean tour = true;
 		Player monPlayer;
@@ -51,29 +53,31 @@ public class MainPlayer {
 			// Tour du Joueur 1
 			System.out.println("Player  : " + monPlayer.getName());
 			System.out.println("Grille : -------------------------------");
-			// Grille pour voir là où l'on a tiré et les bateaux que l'on a touché/coulé
-			System.out.println(monPlayer.getMaGrille().toString());
+			System.out.println(monPlayer.myCoordString());
 			boolean tirOk = false;
 			String tir1 = "";
+			Coordonnee c = null;
 			while (!tirOk) {
 				Scanner tir = new Scanner(System.in);
 				System.out.println("Veuillez saisir une coordonnée de tir ( " + monPlayer.getName() + " ) :");
 				tir1 = tir.nextLine();
-				tirOk = monPlayer.getMaGrille().coordCorrect(tir1);
+				 c = new Coordonnee(tir1);
+				tirOk = c.coordCorrect(tir1);
 			}
 			System.out.println("missile  -------------" + tir1);
 			boolean touche = false;
 			boolean destroyed = false;// variable pour supprimer un bateau si jamais il est coulé
-			Coordonnee shoot = new Coordonnee(tir1);
 			Ship shipDelete = new Ship();// Bateau fictif pour les vérifications +
-			int a = shipDelete.coordLeft(shoot.getPartOne());// Conversion Coordonnée en Int
-			int b =  shipDelete.coordRight(shoot.getPartTwo());// On enregistre les coordonnées du tir
 			// Si jamais aucun bateau n'est touché on peut dire que la position de tir est
 			// ratée
 			for (Ship s1 : monAdversaire.getFlotte()) {
 				if (s1.isHit(tir1)) {
 					touche = true;
-					monPlayer.getMaGrille().setGrille(a, b, "⛴");
+					c.setHit();
+					
+					System.out.println("hit:"+c.getHit());
+					monPlayer.getMyCoords().add(c);
+					//monPlayer.getMaGrille().setGrille(a, b, "⛴");
 					if (s1.isDestroyed()) {
 						shipDelete = s1;
 						destroyed = true;
@@ -83,11 +87,14 @@ public class MainPlayer {
 				}
 			}
 			if (touche) {
+				
 				System.out.println("Touché");
 			} else {
+				monPlayer.getMyCoords().add(c);
 				System.out.println("Raté");
-				monPlayer.getMaGrille().setGrille(a, b, "X");
+				//monPlayer.getMaGrille().setGrille(a, b, "X");
 			}
+			
 			if (destroyed) {
 				System.out.println("Coulé");
 				monAdversaire.getFlotte().remove(shipDelete);

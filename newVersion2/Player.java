@@ -6,7 +6,7 @@ public class Player {
 	private String name;
 	private int score;
 	private ArrayList<Ship> Flotte;
-	private Grille maGrille;
+	private ArrayList<Coordonnee> myCoords;
 
 	private int nbCarrier;
 	private int nbCruiser;
@@ -18,7 +18,7 @@ public class Player {
 		name = nom;
 		score = 0;
 		Flotte = new ArrayList<Ship>();
-		maGrille = new Grille(10, 10);
+		myCoords = new ArrayList<Coordonnee>();
 		nbCarrier = 0;
 		nbCruiser = 0;
 		nbBattleship = 0;
@@ -47,9 +47,11 @@ public class Player {
 		return Flotte;
 	}
 
-	public Grille getMaGrille() {
-		return maGrille;
+	
+	public ArrayList<Coordonnee> getMyCoords() {
+		return myCoords;
 	}
+
 
 	/***************
 	 * Creation / Incrémentation nb Bateaux et vérifications
@@ -71,7 +73,8 @@ public class Player {
 						System.out.println("Veuillez saisir une coordonnée de début :");
 						start = sc3.nextLine();
 						if (start.length() > 1) {
-							coordOk = this.getMaGrille().coordCorrect(start);
+							Coordonnee coord = new Coordonnee(start);
+							coordOk = coord.coordCorrect(start);
 							System.out.println("Vous avez saisi : " + start);
 						}
 
@@ -82,7 +85,8 @@ public class Player {
 						System.out.println("Veuillez saisir une coordonnée de fin :");
 						end = sc4.nextLine();
 						if (end.length() > 1) {
-							coordOk = this.getMaGrille().coordCorrect(end);
+							Coordonnee coord = new Coordonnee(end);
+							coordOk = coord.coordCorrect(end);
 							System.out.println("Vous avez saisi : " + end);
 						}
 					} // Fin Coordonnée de Fin
@@ -97,30 +101,7 @@ public class Player {
 				System.out.println("Vous avez créé un bateau de taille : " + s.getSize());
 
 				if (s.getSize() == 3) {
-					boolean chiffreBon = false;
-					while (!chiffreBon) {
-						System.out.println("Vous voulez un Submarine (Tapez 1) ou un Cruiser(Tapez 2)?");
-						Scanner type = new Scanner(System.in);
-						int bateau = 0;
-						try {
-							bateau = type.nextInt();
-							
-							if(bateau ==  1) {
-								s.setName("Submarine");
-								chiffreBon = true;
-							}else if(bateau ==  2) {
-								s.setName("Cruiser");
-								chiffreBon = true;
-							}else {
-								
-								chiffreBon = false;
-								System.out.println("Entrez un chiffre entre 1 et 2");
-							}
-						} catch (Exception e) {
-							chiffreBon = false;
-							System.out.println("Entrez un chiffre entre 1 et 2, pas autre chose");
-						}
-					}
+					s.nameShip3();
 				}
 				System.out.println("Vous avez choisi : " + s.getName());
 				boolean chevauchement = this.verificationChevauchement(s);
@@ -148,18 +129,14 @@ public class Player {
 
 					/**** Partie Affichage Données du Joueur ******/
 					System.out.println("Bateau n° " + i);
-
 					afficheFlotteDetails();
 					/**** Partie Affichage Grille du Joueur ******/
 					for (int z = 0; z < s.getSize(); z++) {
-
-						int a = s.coordLeft(s.getTabCoord()[z].getPartOne());
-						int b = s.coordRight(s.getTabCoord()[z].getPartTwo());
-
-						this.getMaGrille().setGrille(a, b, "⛴");
-
+						this.getMyCoords().add(s.getTabCoord()[z]);
 					}
-					System.out.println(this.getMaGrille().toString());
+					
+					String grille = this.myCoordString();
+					System.out.println(grille);
 					/**************************************************/
 				} else {
 					if (chevauchement) {
@@ -263,6 +240,66 @@ public class Player {
 			st += s;
 		}
 		return st;
+	}
+	
+	public String myCoordString() {
+		String str = "";
+		String lettres = "	";
+		String letter = "A";
+		char l = letter.charAt(0);
+		int cpt = 0;
+		while (cpt < 10) {
+			lettres += "" + l + "\t";
+			l++; // On change la lettre
+			cpt++;
+		}
+
+		str += lettres + "\n";
+		letter = "A";
+		 l = letter.charAt(0);
+	
+		int u = 0;
+		int w;
+		while (u < 10) {
+			w = 0;
+			str += (u + 1) + "	";
+			int nb = u+1;
+			while (w < 10) {
+				
+				String maCoord = l+""+nb;
+				boolean equal =false;
+				boolean touche = false;
+				Coordonnee c = new Coordonnee(maCoord);
+				for(Coordonnee coord : this.getMyCoords()) {
+					//System.out.println("c:"+coord.getCoordonnee()+" hit: "+coord.getHit());
+					if(coord.getCoordonnee().equals(c.getCoordonnee())) {
+						equal = true;
+						if(coord.getHit() == 1) {
+							touche = true;
+							
+						}
+					}
+				}
+				if(equal) {
+					if(touche) {
+						str += "" + "⛴" + "\t";
+					}else {
+						str += "" + "X" + "\t";
+					}
+				}else {
+					str += "" + "〰️" + "\t";
+				}
+				
+				
+				w++;
+				l++;
+			}
+			str += "\n";
+			letter = "A";
+			l = letter.charAt(0);
+			u++;
+		}
+		return str;
 	}
 
 	public int getNbCarrier() {

@@ -1,3 +1,5 @@
+import java.util.Scanner;
+
 public class Ship {
 	Coordonnee[] tabCoord; // tableau des coordonnées entières du bateau
 	String name;
@@ -74,11 +76,39 @@ public class Ship {
 		Coordonnee startC = new Coordonnee(start);
 		Coordonnee endC = new Coordonnee(end);
 		boolean diagonal = false;
-		if (!(startC.getPartOne()== endC.getPartOne()) && !(startC.getPartTwo()== endC.getPartTwo())) { // Bateau impossible
+		if (!(startC.getPartOne() == endC.getPartOne()) && !(startC.getPartTwo() == endC.getPartTwo())) { // Bateau
+																											// impossible
 			diagonal = true; // à placer
 
 		}
 		return diagonal;
+	}
+
+	public void nameShip3() {
+		boolean chiffreBon = false;
+		while (!chiffreBon) {
+			System.out.println("Vous voulez un Submarine (Tapez 1) ou un Cruiser(Tapez 2)?");
+			Scanner type = new Scanner(System.in);
+			int bateau = 0;
+			try {
+				bateau = type.nextInt();
+
+				if (bateau == 1) {
+					this.setName("Submarine");
+					chiffreBon = true;
+				} else if (bateau == 2) {
+					this.setName("Cruiser");
+					chiffreBon = true;
+				} else {
+
+					chiffreBon = false;
+					System.out.println("Entrez un chiffre entre 1 et 2");
+				}
+			} catch (Exception e) {
+				chiffreBon = false;
+				System.out.println("Entrez un chiffre entre 1 et 2, pas autre chose");
+			}
+		}
 	}
 
 	/***************** Code pour gérer le touché/coulé *******************/
@@ -90,15 +120,10 @@ public class Ship {
 			if (tabCoord[i] == null) {
 				touche = false;
 			} else {
-				/*Coordonnee missile = new Coordonnee(missileCoord);
-				if (tabCoord[i].getPartOne() == missile.getPartOne()
-						&& tabCoord[i].getPartOne() == missile.getPartTwo()) {
-					tabCoord[i].setHit();
-					touche = true;*/
-				if(tabCoord[i].getCoordonnee().equals(missileCoord)) {
+				if (tabCoord[i].getCoordonnee().equals(missileCoord)) {
 					tabCoord[i].setHit();
 					touche = true;
-				
+
 				}
 			}
 			i++;
@@ -124,12 +149,14 @@ public class Ship {
 	}
 
 	public boolean isDestroyed() {
-		int i = 0;
+
 		int cpt = 0;
-		for (Coordonnee c : this.getTabCoord()) {
-			if (c.getHit() == 1) {
+		for (int i = 0; i < this.getSize(); i++) {
+			System.out.println(this.getTabCoord()[i]+ " hit: "+this.getTabCoord()[i].getHit());
+			if (this.getTabCoord()[i].getHit() == 1) {
 				cpt++;
 			}
+
 		}
 
 		return cpt == this.getSize();
