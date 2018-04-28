@@ -133,20 +133,7 @@ public class Ship {
 
 	}
 
-	public int coordLeft(char h) {
-		int left = 0;
-
-		left = Character.getNumericValue(h) - 10;
-
-		return left;
-	}
-
-	public int coordRight(int h) {
-		int right = 0;
-		right = h - 1; // Car le tableau commence à 0
-
-		return right;
-	}
+	
 
 	public boolean isDestroyed() {
 
