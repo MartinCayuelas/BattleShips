@@ -15,6 +15,11 @@ public class Ship {
 
 			Coordonnee startC = new Coordonnee(start);
 			Coordonnee endC = new Coordonnee(end);
+			if(startC.compareCoord(startC, endC)) {
+				Coordonnee tmp = startC;
+				startC = endC;
+				endC = tmp;
+			}
 
 			boolean vertical;
 			if (startC.getPartOne() == (endC.getPartOne())) {
@@ -133,13 +138,10 @@ public class Ship {
 
 	}
 
-	
-
 	public boolean isDestroyed() {
 
 		int cpt = 0;
 		for (int i = 0; i < this.getSize(); i++) {
-			System.out.println(this.getTabCoord()[i]+ " hit: "+this.getTabCoord()[i].getHit());
 			if (this.getTabCoord()[i].getHit() == 1) {
 				cpt++;
 			}

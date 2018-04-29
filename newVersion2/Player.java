@@ -47,11 +47,9 @@ public class Player {
 		return Flotte;
 	}
 
-	
 	public ArrayList<Coordonnee> getMyCoords() {
 		return myCoords;
 	}
-
 
 	/***************
 	 * Creation / Incrémentation nb Bateaux et vérifications
@@ -69,8 +67,8 @@ public class Player {
 				while (diagonal) { // Tant que le bateau est en diagonale on loop
 					boolean coordOk = false;
 					while (!coordOk) {
-						Scanner sc3 = new Scanner(System.in);
 						System.out.println("Veuillez saisir une coordonnée de début :");
+						Scanner sc3 = new Scanner(System.in);
 						start = sc3.nextLine();
 						if (start.length() > 1) {
 							Coordonnee coord = new Coordonnee(start);
@@ -81,8 +79,8 @@ public class Player {
 					} // Fin Coordonnée de Début
 					coordOk = false;
 					while (!coordOk) {
-						Scanner sc4 = new Scanner(System.in);
 						System.out.println("Veuillez saisir une coordonnée de fin :");
+						Scanner sc4 = new Scanner(System.in);
 						end = sc4.nextLine();
 						if (end.length() > 1) {
 							Coordonnee coord = new Coordonnee(end);
@@ -95,58 +93,67 @@ public class Player {
 						System.out.println("Bateau en diagonale!");
 					}
 				}
+				try {
+					Ship s = new Ship(start, end);
 
-				Ship s = new Ship(start, end);
+					System.out.println("Vous avez créé un bateau de taille : " + s.getSize());
 
-				System.out.println("Vous avez créé un bateau de taille : " + s.getSize());
-
-				if (s.getSize() == 3) {
-					s.nameShip3();
-				}
-				System.out.println("Vous avez choisi : " + s.getName());
-				boolean chevauchement = this.verificationChevauchement(s);
-				boolean okAjout = this.verificationAjout(s.getName());
-
-				if (okAjout && !chevauchement) {
-					this.getFlotte().add(s); // Ajout du Bateau à la flotte du joueur
-
-					/********** Partie Incrémentation nombre de Bateaux du Joueur **********/
 					if (s.getSize() == 3) {
-						int size;
-						if (s.getName().equals("Submarine")) {
-							size = 1;
+						s.nameShip3();
+					}
+					System.out.println("Vous avez choisi : " + s.getName());
+					boolean chevauchement = this.verificationChevauchement(s);
+					boolean okAjout = this.verificationAjout(s.getName());
+
+					if (okAjout && !chevauchement) {
+						this.getFlotte().add(s); // Ajout du Bateau à la flotte du joueur
+
+						/********** Partie Incrémentation nombre de Bateaux du Joueur **********/
+						if (s.getSize() == 3) {
+							int size;
+							if (s.getName().equals("Submarine")) {
+								size = 1;
+							} else {
+								size = 2;
+							}
+							this.incrementeTypeBateauSize3(size);
+
 						} else {
-							size = 2;
+							this.incrementeTypeBateau(s.getSize());
 						}
-						this.incrementeTypeBateauSize3(size);
 
+						ajoute = true; // On a ajouté le Bateau
+						i++;
+
+						/**** Partie Affichage Données du Joueur ******/
+						System.out.println("Bateau n° " + i);
+						afficheFlotteDetails();
+						/**** Partie Affichage "Grille" du Joueur ******/
+						for (int z = 0; z < s.getSize(); z++) {
+							this.getMyCoords().add(s.getTabCoord()[z]);
+						}
+
+						String grille = this.myCoordString();
+						System.out.println(grille);
+						/**************************************************/
 					} else {
-						this.incrementeTypeBateau(s.getSize());
-					}
+						if (chevauchement) {
+							System.out.println("Le bateau va chevaucher une position déjà occupée");
+						} else {
+							if (s.getSize() > 5) {
+								System.out.println("Size Ship > 5 -- Try Again");
+							} else {
+								System.out.println("Vous avez atteint le nombre limite de " + s.getName() + "s");
+								System.out.println("Choississez un autre type de bateau --------------");
 
-					ajoute = true; // On a ajouté le Bateau
-					i++;
+							}
+						}
+						afficheFlotteDetails();
+						ajoute = false;
+					}
+				} catch (Exception e) {
+					System.out.println("Size Ship == 1 --> Try again");
 
-					/**** Partie Affichage Données du Joueur ******/
-					System.out.println("Bateau n° " + i);
-					afficheFlotteDetails();
-					/**** Partie Affichage Grille du Joueur ******/
-					for (int z = 0; z < s.getSize(); z++) {
-						this.getMyCoords().add(s.getTabCoord()[z]);
-					}
-					
-					String grille = this.myCoordString();
-					System.out.println(grille);
-					/**************************************************/
-				} else {
-					if (chevauchement) {
-						System.out.println("Le bateau va chevaucher une position déjà occupée");
-					} else {
-						System.out.println("Vous avez atteint le nombre limite de " + s.getName() + "s");
-						System.out.println("Choississez un autre type de bateau --------------");
-					}
-					afficheFlotteDetails();
-					ajoute = false;
 				}
 
 			}
@@ -241,7 +248,7 @@ public class Player {
 		}
 		return st;
 	}
-	
+
 	public String myCoordString() {
 		String str = "";
 		String lettres = "	";
@@ -256,41 +263,40 @@ public class Player {
 
 		str += lettres + "\n";
 		letter = "A";
-		 l = letter.charAt(0);
-	
+		l = letter.charAt(0);
+
 		int u = 0;
 		int w;
 		while (u < 10) {
 			w = 0;
 			str += (u + 1) + "	";
-			int nb = u+1;
+			int nb = u + 1;
 			while (w < 10) {
-				
-				String maCoord = l+""+nb;
-				boolean equal =false;
+
+				String maCoord = l + "" + nb;
+				boolean equal = false;
 				boolean touche = false;
 				Coordonnee c = new Coordonnee(maCoord);
-				for(Coordonnee coord : this.getMyCoords()) {
-					//System.out.println("c:"+coord.getCoordonnee()+" hit: "+coord.getHit());
-					if(coord.getCoordonnee().equals(c.getCoordonnee())) {
+				for (Coordonnee coord : this.getMyCoords()) {
+					// System.out.println("c:"+coord.getCoordonnee()+" hit: "+coord.getHit());
+					if (coord.getCoordonnee().equals(c.getCoordonnee())) {
 						equal = true;
-						if(coord.getHit() == 1) {
+						if (coord.getHit() == 1) {
 							touche = true;
-							
+
 						}
 					}
 				}
-				if(equal) {
-					if(touche) {
+				if (equal) {
+					if (touche) {
 						str += "" + "⛴" + "\t";
-					}else {
+					} else {
 						str += "" + "X" + "\t";
 					}
-				}else {
+				} else {
 					str += "" + "〰️" + "\t";
 				}
-				
-				
+
 				w++;
 				l++;
 			}

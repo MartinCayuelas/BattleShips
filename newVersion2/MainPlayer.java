@@ -74,10 +74,8 @@ public class MainPlayer {
 				if (s1.isHit(tir1)) {
 					touche = true;
 					c.setHit();
-					
 					System.out.println("hit:"+c.getHit());
 					monPlayer.getMyCoords().add(c);
-					//monPlayer.getMaGrille().setGrille(a, b, "⛴");
 					if (s1.isDestroyed()) {
 						shipDelete = s1;
 						destroyed = true;
@@ -87,12 +85,10 @@ public class MainPlayer {
 				}
 			}
 			if (touche) {
-				
 				System.out.println("Touché");
 			} else {
 				monPlayer.getMyCoords().add(c);
 				System.out.println("Raté");
-				//monPlayer.getMaGrille().setGrille(a, b, "X");
 			}
 			
 			if (destroyed) {
