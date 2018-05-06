@@ -8,6 +8,8 @@ public class Player {
 	private ArrayList<Ship> Flotte;
 	private ArrayList<Coordonnee> myCoords;
 
+	/***Avec L'IA***/
+	//Cela passera dans Human 
 	private int nbCarrier;
 	private int nbCruiser;
 	private int nbBattleship;
@@ -27,6 +29,7 @@ public class Player {
 
 	}
 
+	/*************Getters/setters******************/
 	public String getName() {
 		return name;
 	}
@@ -75,7 +78,6 @@ public class Player {
 							coordOk = coord.coordCorrect(start);
 							System.out.println("Vous avez saisi : " + start);
 						}
-
 					} // Fin Coordonnée de Début
 					coordOk = false;
 					while (!coordOk) {
@@ -121,20 +123,15 @@ public class Player {
 						} else {
 							this.incrementeTypeBateau(s.getSize());
 						}
-
 						ajoute = true; // On a ajouté le Bateau
 						i++;
-
 						/**** Partie Affichage Données du Joueur ******/
 						System.out.println("Bateau n° " + i);
-						afficheFlotteDetails();
 						/**** Partie Affichage "Grille" du Joueur ******/
 						for (int z = 0; z < s.getSize(); z++) {
 							this.getMyCoords().add(s.getTabCoord()[z]);
 						}
-
-						String grille = this.myCoordString();
-						System.out.println(grille);
+						System.out.println(this.myCoordString());
 						/**************************************************/
 					} else {
 						if (chevauchement) {
@@ -145,23 +142,61 @@ public class Player {
 							} else {
 								System.out.println("Vous avez atteint le nombre limite de " + s.getName() + "s");
 								System.out.println("Choississez un autre type de bateau --------------");
-
 							}
 						}
-						afficheFlotteDetails();
 						ajoute = false;
 					}
+				afficheFlotteDetails();
 				} catch (Exception e) {
 					System.out.println("Size Ship == 1 --> Try again");
-
 				}
-
 			}
 		}
-
 	}
+	
+	/*********Gestion du Tir***************/
+	
+	public void shootProcess(Player monPlayer, Player monAdversaire) {
+		Coordonnee c = new Coordonnee();
+		c = c.tir(monPlayer);
+		String tir1 = c.getCoordonnee();
+		boolean touche = false;
+		boolean destroyed = false;// variable pour supprimer un bateau si jamais il est coulé
+		Ship shipDelete = new Ship();// Bateau fictif pour les vérifications +
+		// Si jamais aucun bateau n'est touché on peut dire que la position de tir est
+		// ratée
+		for (Ship s1 : monAdversaire.getFlotte()) {
+			if (s1.isHit(tir1)) {
+				touche = true;
+				c.setHit();
+				monPlayer.getMyCoords().add(c);
+				if (s1.isDestroyed()) {
+					shipDelete = s1;
+					destroyed = true;
+				} else {
+					System.out.println("Pas coulé");
+				}
+			}
+		}
+		if (touche) {
+			System.out.println("Touché");
+		} else {
+			monPlayer.getMyCoords().add(c);
+			System.out.println("Raté");
+		}
+
+		if (destroyed) {
+			System.out.println("Coulé");
+			monAdversaire.getFlotte().remove(shipDelete);
+			System.out.println("Il reste " + monAdversaire.getFlotte().size() + " bateaux à couler");
+			int score = monPlayer.getScore() + 1;
+			monPlayer.setScore(score);
+		}
+	}
+	
 
 	void afficheFlotteDetails() {
+		
 		System.out.println("Carriers (Taille 5): " + this.getNbCarrier());
 		System.out.println("Cruisers (Taille 3): " + this.getNbCruiser());
 		System.out.println("Battleships (Taille 4): " + this.getNbBattleship());
@@ -260,11 +295,9 @@ public class Player {
 			l++; // On change la lettre
 			cpt++;
 		}
-
 		str += lettres + "\n";
 		letter = "A";
 		l = letter.charAt(0);
-
 		int u = 0;
 		int w;
 		while (u < 10) {
@@ -272,18 +305,15 @@ public class Player {
 			str += (u + 1) + "	";
 			int nb = u + 1;
 			while (w < 10) {
-
 				String maCoord = l + "" + nb;
 				boolean equal = false;
 				boolean touche = false;
 				Coordonnee c = new Coordonnee(maCoord);
 				for (Coordonnee coord : this.getMyCoords()) {
-					// System.out.println("c:"+coord.getCoordonnee()+" hit: "+coord.getHit());
 					if (coord.getCoordonnee().equals(c.getCoordonnee())) {
 						equal = true;
 						if (coord.getHit() == 1) {
 							touche = true;
-
 						}
 					}
 				}
@@ -296,7 +326,6 @@ public class Player {
 				} else {
 					str += "" + "〰️" + "\t";
 				}
-
 				w++;
 				l++;
 			}

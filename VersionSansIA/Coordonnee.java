@@ -1,15 +1,18 @@
+import java.util.ArrayList;
+import java.util.Scanner;
 
 public class Coordonnee  {
 
 	private char partOne;
 	private int partTwo;
-	private int hit;
+	private int hit; //Touché = 1, Non touché = 0
+	
+	public Coordonnee() {}
 
 	public Coordonnee(String coord) {
 
 		if (coord.length() == 3) {
 			coord = coord.substring(0, 1).toUpperCase() + coord.substring(1, 2) + coord.substring(2, 3);
-
 			partOne = coord.charAt(0);
 			String partTwo1 = coord.substring(1, 2);
 			String partTwo2 = coord.substring(2, 3);
@@ -19,18 +22,19 @@ public class Coordonnee  {
 			} catch (Exception e) {
 				System.out.println("Problème dans le format");
 			}
-			hit = 0;
+			
 		} else {
 			coord = coord.substring(0, 1).toUpperCase() + coord.substring(1, 2);
-
+			//UPPER CASE pour la cas où l'on rentre a1 par exemple
 			partOne = coord.charAt(0);
 			try {
 				partTwo = Integer.parseInt(coord.substring(1, 2));
 			} catch (Exception e) {
 				System.out.println("Problème dans le format");
 			}
-			hit = 0;
+			
 		}
+		hit = 0;
 
 	}
 
@@ -38,7 +42,7 @@ public class Coordonnee  {
 		return partOne;
 	}
 
-	public void setPartOne(char partOne) {
+	public void setPartOne(char partOne){
 		this.partOne = partOne;
 	}
 
@@ -67,11 +71,18 @@ public class Coordonnee  {
 	boolean coordCorrect(String coord) {
 		boolean coordOk = false;
 		String tab[] = { "A", "B", "C", "D", "E", "F", "G", "H", "I", "J" };
-		String partOne;
-		String partTwo;
-
+		String partOne="";
+		String partTwo="";
+		try{
 		partOne = coord.substring(0, 1).toUpperCase(); // Debut
-		partTwo = coord.substring(1, 2); // end
+		}catch(Exception e) {
+			System.out.println("Partie 1 manquante");
+		}
+		try{
+			partTwo = coord.substring(1, 2); // end
+		}catch(Exception e) {
+			System.out.println("Partie 2 manquante");
+		}
 
 		if (coord.length() == 3) {
 			String partThree;
@@ -102,7 +113,7 @@ public class Coordonnee  {
 		return coordOk;
 	}
 
-	public boolean compareCoord(Coordonnee start, Coordonnee end) {
+	public boolean compareCoord(Coordonnee start, Coordonnee end) { // permet de savoir quelle est la coordonnée la "plus" grande
 		boolean superieur = false;
 		if (start.getPartOne() > end.getPartOne()) {
 			superieur = true;
@@ -112,4 +123,87 @@ public class Coordonnee  {
 		}
 		return superieur;
 	}
+	
+	public Coordonnee tir(Player p) {
+		boolean tirOk = false;
+		String tir1 = "";
+		Coordonnee c = new Coordonnee();
+		while (!tirOk) {
+			Scanner tir = new Scanner(System.in);
+			System.out.println("Veuillez saisir une coordonnée de tir ( " + p.getName() + " ) :");
+			tir1 = tir.nextLine();
+			if(tirOk = c.coordCorrect(tir1)) {
+			 c = new Coordonnee(tir1);
+			}
+		}
+		System.out.println("missile  -------------" + tir1);
+		
+		return c;
+	}
+	
+	
+	/*****************Pour le robot**************/
+	
+	public ArrayList<Coordonnee> getPossibilities(int sizeBoat) {
+		ArrayList<Coordonnee> shipCoords = new ArrayList<Coordonnee>();
+		
+		int i = 0;
+		char lettre = this.getPartOne();
+		char lSup = lettre;
+		char lInf= lettre;
+		while(i<sizeBoat-1) {
+			i++;
+			lSup++;
+			lInf--;
+			
+		}
+		//Chiffre change
+		if((this.getPartTwo() + i) <= 10) {
+			int v = this.getPartTwo() + i;
+			String c = this.getPartOne()+""+v;
+			Coordonnee maCoord = new Coordonnee(c);
+			shipCoords.add(maCoord);
+		}
+		if((this.getPartTwo() - i) > 0) {
+			int v = this.getPartTwo() - i;
+			String c = this.getPartOne()+""+v;
+			Coordonnee maCoord = new Coordonnee(c);
+			shipCoords.add(maCoord);
+		}
+		
+		//lettre change
+		
+		if(lSup <= 'J') {
+			String c = lSup+""+this.getPartTwo();
+			Coordonnee maCoord = new Coordonnee(c);
+			shipCoords.add(maCoord);
+		}
+		if(lInf >= 'A') {
+			String c = lInf+""+this.getPartTwo();
+			Coordonnee maCoord = new Coordonnee(c);
+			shipCoords.add(maCoord);
+		}
+		
+		
+			
+		return shipCoords;
+	}
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
 }

@@ -1,2 +1,0 @@
-- Changer nom Fonction : tirCorrect() -> Mettre coordCorrect();
-- La taille dans la fonction à attribue ren fonction de la taille de la grille

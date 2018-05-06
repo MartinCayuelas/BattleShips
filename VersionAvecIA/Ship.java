@@ -10,17 +10,14 @@ public class Ship {
 
 	public Ship(String start, String end) {
 		int sizeTab = 0;
-
 		if (!start.equals(end)) {
-
 			Coordonnee startC = new Coordonnee(start);
 			Coordonnee endC = new Coordonnee(end);
-			if(startC.compareCoord(startC, endC)) {
+			if (startC.compareCoord(startC, endC)) {
 				Coordonnee tmp = startC;
 				startC = endC;
 				endC = tmp;
 			}
-
 			boolean vertical;
 			if (startC.getPartOne() == (endC.getPartOne())) {
 				vertical = true;
@@ -29,8 +26,7 @@ public class Ship {
 				vertical = false;
 				sizeTab = endC.getPartOne() - startC.getPartOne() + 1;
 			}
-			tabCoord = new Coordonnee[sizeTab];
-
+			tabCoord = new Coordonnee[sizeTab]; // Tableau de coordonnées du Bateau
 			for (int z = 0; z < sizeTab; z++) {
 				if (vertical) {
 					int pos = startC.getPartTwo() + z;
@@ -43,20 +39,7 @@ public class Ship {
 					tabCoord[z] = newCoord;
 				}
 			}
-
-			switch (this.getSize()) {
-			case 2:
-				this.name = "Destroyer";
-				break;
-			case 4:
-				name = "Battleship";
-				break;
-			case 5:
-				name = "Carrier";
-				break;
-			default:
-				this.name = "None";
-			}
+			this.setName(this.getSize());
 		}
 	}
 
@@ -64,8 +47,29 @@ public class Ship {
 		return name;
 	}
 
-	public void setName(String name) {
-		this.name = name;
+	public void setNameSub() {
+		this.name = "Submarine";
+	}
+	
+	public void setNameCruiser() {
+		this.name = "Cruiser";
+	}
+	
+	
+	public void setName(int i) {
+		switch (i) {
+		case 2:
+			this.name = "Destroyer";
+			break;
+		case 4:
+			name = "Battleship";
+			break;
+		case 5:
+			name = "Carrier";
+			break;
+		default:
+			this.name = "None";
+		}
 	}
 
 	public int getSize() {
@@ -81,10 +85,8 @@ public class Ship {
 		Coordonnee startC = new Coordonnee(start);
 		Coordonnee endC = new Coordonnee(end);
 		boolean diagonal = false;
-		if (!(startC.getPartOne() == endC.getPartOne()) && !(startC.getPartTwo() == endC.getPartTwo())) { // Bateau
-																											// impossible
-			diagonal = true; // à placer
-
+		if (!(startC.getPartOne() == endC.getPartOne()) && !(startC.getPartTwo() == endC.getPartTwo())) { 																					// impossible
+			diagonal = true; // // Bateauen diagonale
 		}
 		return diagonal;
 	}
@@ -99,10 +101,10 @@ public class Ship {
 				bateau = type.nextInt();
 
 				if (bateau == 1) {
-					this.setName("Submarine");
+					this.name = "Submarine";
 					chiffreBon = true;
 				} else if (bateau == 2) {
-					this.setName("Cruiser");
+					this.name = "Cruiser";
 					chiffreBon = true;
 				} else {
 
@@ -133,9 +135,7 @@ public class Ship {
 			}
 			i++;
 		}
-
 		return touche;
-
 	}
 
 	public boolean isDestroyed() {
