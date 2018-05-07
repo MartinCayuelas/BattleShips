@@ -95,7 +95,7 @@ public class Main {
 						for (int z = 0; z < s.getSize(); z++) {
 							p.getMyCoords().add(s.getTabCoord()[z]);
 						}
-						System.out.println(this.myCoordString());
+						System.out.println(p.myCoordString());
 						/**************************************************/
 					}else {
 						if (chevauchement) {
@@ -110,7 +110,7 @@ public class Main {
 						}
 						ajoute = false;
 					}
-				afficheFlotteDetails();
+				p.afficheFlotteDetails();
 				} catch (Exception e) {
 					System.out.println("Size Ship == 1 --> Try again");
 				}
