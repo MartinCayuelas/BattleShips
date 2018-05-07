@@ -167,7 +167,7 @@ public class MainPlayer {
 		Coordonnee c = new Coordonnee();
 		while (!tirOk) {
 			Scanner tir = new Scanner(System.in);
-			System.out.println("Veuillez saisir une coordonnée de tir ( " + p.getName() + " ) :");
+			System.out.println("Veuillez saisir une coordonnée de tir ( " + monPlayer.getName() + " ) :");
 			tir1 = tir.nextLine();
 			if(tirOk = c.coordCorrect(tir1)) {
 			 c = new Coordonnee(tir1);
