@@ -161,7 +161,41 @@ public class MainPlayer {
 			System.out.println("Player  : " + monPlayer.getName());
 			System.out.println("Grille : -------------------------------");
 			System.out.println(monPlayer.myCoordString()); //List of Shoots = Display kind of Grid
-			monPlayer.shootProcess(monPlayer, monAdversaire);
+			//monPlayer.shootProcess(monPlayer, monAdversaire);Coordonnee c = new Coordonnee();
+		c = c.tir(monPlayer);
+		String tir1 = c.getCoordonnee();
+		boolean touche = false;
+		boolean destroyed = false;// variable pour supprimer un bateau si jamais il est coulé
+		Ship shipDelete = new Ship();// Bateau fictif pour les vérifications +
+		// Si jamais aucun bateau n'est touché on peut dire que la position de tir est
+		// ratée
+		for (Ship s1 : monAdversaire.getFlotte()) {
+			if (s1.isHit(tir1)) {
+				touche = true;
+				c.setHit();
+				monPlayer.getMyCoords().add(c);
+				if (s1.isDestroyed()) {
+					shipDelete = s1;
+					destroyed = true;
+				} else {
+					System.out.println("Pas coulé");
+				}
+			}
+		}
+		if (touche) {
+			System.out.println("Touché");
+		} else {
+			monPlayer.getMyCoords().add(c);
+			System.out.println("Raté");
+		}
+
+		if (destroyed) {
+			System.out.println("Coulé");
+			monAdversaire.getFlotte().remove(shipDelete);
+			System.out.println("Il reste " + monAdversaire.getFlotte().size() + " bateaux à couler");
+			int score = monPlayer.getScore() + 1;
+			monPlayer.setScore(score);
+		}
 			System.out.println("-------------------------------");
 			System.out.println();
 			if (tour == true) {
