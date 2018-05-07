@@ -1,7 +1,49 @@
+import java.util.Scanner;
 
-		System.out.println("--J2--" + player2.getName());
-		player2.creationFlotte();
-		System.out.println(player2.getFlotte());
+public class MainPlayer {
+
+	public static void main(String[] args) {
+
+		System.out.println("Entrez votre nom (J1)");
+		Scanner sc = new Scanner(System.in);
+		String name = sc.nextLine();
+		Player player1 = new Player(name);
+		System.out.println("Entrez votre nom (J2)");
+		Scanner sc2 = new Scanner(System.in);
+		String name2 = sc2.nextLine();
+		Player  player2 = new Player(name2);
+
+		System.out.println("Nom J1 : " + player1.getName());
+		System.out.println("Nom J2 : " + player2.getName());
+
+		System.out.println("---------------------------Initialisation---------------------");
+		//System.out.println("--Joueur--" + player1.getName());
+	//	player1.creationFlotte();
+		
+		Player p = player1;
+		int nb = 0;
+		while(nb < 2){
+			System.out.println("--Joueur--" + p.getName());
+			
+			
+			
+			
+			
+			
+			System.out.println(p.getFlotte());
+			p = player2;
+			nb++;
+		}
+		
+		
+		
+		
+		
+		
+		//System.out.println(player1.getFlotte());
+		//System.out.println("--J2--" + player2.getName());
+		//player2.creationFlotte();
+		//System.out.println(player2.getFlotte());
 
 		System.out.println("---------Début de la partie-----------");
 
