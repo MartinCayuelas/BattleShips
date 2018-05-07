@@ -59,7 +59,45 @@ public class MainPlayer {
 					if (diagonal) {
 						System.out.println("Bateau en diagonale!");
 					}
-				}
+				}try {
+					Ship s = new Ship(start, end);
+
+					System.out.println("Vous avez créé un bateau de taille : " + s.getSize());
+
+					if (s.getSize() == 3) {
+						s.nameShip3();
+					}
+					System.out.println("Vous avez choisi : " + s.getName());
+					boolean chevauchement = this.verificationChevauchement(s);
+					boolean okAjout = this.verificationAjout(s.getName());
+
+					if (okAjout && !chevauchement) {
+						this.getFlotte().add(s); // Ajout du Bateau à la flotte du joueur
+
+						/********** Partie Incrémentation nombre de Bateaux du Joueur **********/
+						if (s.getSize() == 3) {
+							int size;
+							if (s.getName().equals("Submarine")) {
+								size = 1;
+							} else {
+								size = 2;
+							}
+							this.incrementeTypeBateauSize3(size);
+
+						} else {
+							this.incrementeTypeBateau(s.getSize());
+						}
+						ajoute = true; // On a ajouté le Bateau
+						i++;
+						/**** Partie Affichage Données du Joueur ******/
+						System.out.println("Bateau n° " + i);
+						/**** Partie Affichage "Grille" du Joueur ******/
+						for (int z = 0; z < s.getSize(); z++) {
+							this.getMyCoords().add(s.getTabCoord()[z]);
+						}
+						System.out.println(this.myCoordString());
+						/**************************************************/
+					}
 			
 			
 			
