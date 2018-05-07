@@ -24,7 +24,42 @@ public class MainPlayer {
 		int nb = 0;
 		while(nb < 2){
 			System.out.println("--Joueur--" + p.getName());
-			
+			int i = 0;
+		while (i < 5) {
+			boolean ajoute = false;
+			while (!ajoute) {
+				String start = "";
+				String end = "";
+				boolean diagonal = true; // Bonne forme de coordonnée, pas en diagonale
+				Ship ship = new Ship(); // Bateau fictif pour tester
+				while (diagonal) { // Tant que le bateau est en diagonale on loop
+					boolean coordOk = false;
+					while (!coordOk) {
+						System.out.println("Veuillez saisir une coordonnée de début :");
+						Scanner sc3 = new Scanner(System.in);
+						start = sc3.nextLine();
+						if (start.length() > 1) {
+							Coordonnee coord = new Coordonnee(start);
+							coordOk = coord.coordCorrect(start);
+							System.out.println("Vous avez saisi : " + start);
+						}
+					} // Fin Coordonnée de Début
+					coordOk = false;
+					while (!coordOk) {
+						System.out.println("Veuillez saisir une coordonnée de fin :");
+						Scanner sc4 = new Scanner(System.in);
+						end = sc4.nextLine();
+						if (end.length() > 1) {
+							Coordonnee coord = new Coordonnee(end);
+							coordOk = coord.coordCorrect(end);
+							System.out.println("Vous avez saisi : " + end);
+						}
+					} // Fin Coordonnée de Fin
+					diagonal = ship.isDiagonal(start, end);
+					if (diagonal) {
+						System.out.println("Bateau en diagonale!");
+					}
+				}
 			
 			
 			
