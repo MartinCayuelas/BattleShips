@@ -1,6 +1,6 @@
 import java.util.Scanner;
 
-public class MainPlayer {
+public class Main {
 
 	public static void main(String[] args) {
 
