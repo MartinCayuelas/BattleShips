@@ -162,8 +162,20 @@ public class MainPlayer {
 			System.out.println("Grille : -------------------------------");
 			System.out.println(monPlayer.myCoordString()); //List of Shoots = Display kind of Grid
 			//monPlayer.shootProcess(monPlayer, monAdversaire);Coordonnee c = new Coordonnee();
-		c = c.tir(monPlayer);
-		String tir1 = c.getCoordonnee();
+			boolean tirOk = false;
+		String tir1 = "";
+		Coordonnee c = new Coordonnee();
+		while (!tirOk) {
+			Scanner tir = new Scanner(System.in);
+			System.out.println("Veuillez saisir une coordonnée de tir ( " + p.getName() + " ) :");
+			tir1 = tir.nextLine();
+			if(tirOk = c.coordCorrect(tir1)) {
+			 c = new Coordonnee(tir1);
+			}
+		}
+		System.out.println("missile  -------------" + tir1);
+		
+		//String tir1 = c.getCoordonnee();
 		boolean touche = false;
 		boolean destroyed = false;// variable pour supprimer un bateau si jamais il est coulé
 		Ship shipDelete = new Ship();// Bateau fictif pour les vérifications +
