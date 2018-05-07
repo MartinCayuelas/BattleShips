@@ -68,11 +68,11 @@ public class MainPlayer {
 						s.nameShip3();
 					}
 					System.out.println("Vous avez choisi : " + s.getName());
-					boolean chevauchement = this.verificationChevauchement(s);
-					boolean okAjout = this.verificationAjout(s.getName());
+					boolean chevauchement = p.verificationChevauchement(s);
+					boolean okAjout = p.verificationAjout(s.getName());
 
 					if (okAjout && !chevauchement) {
-						this.getFlotte().add(s); // Ajout du Bateau à la flotte du joueur
+						p.getFlotte().add(s); // Ajout du Bateau à la flotte du joueur
 
 						/********** Partie Incrémentation nombre de Bateaux du Joueur **********/
 						if (s.getSize() == 3) {
@@ -82,10 +82,10 @@ public class MainPlayer {
 							} else {
 								size = 2;
 							}
-							this.incrementeTypeBateauSize3(size);
+							p.incrementeTypeBateauSize3(size);
 
 						} else {
-							this.incrementeTypeBateau(s.getSize());
+							p.incrementeTypeBateau(s.getSize());
 						}
 						ajoute = true; // On a ajouté le Bateau
 						i++;
@@ -93,11 +93,29 @@ public class MainPlayer {
 						System.out.println("Bateau n° " + i);
 						/**** Partie Affichage "Grille" du Joueur ******/
 						for (int z = 0; z < s.getSize(); z++) {
-							this.getMyCoords().add(s.getTabCoord()[z]);
+							p.getMyCoords().add(s.getTabCoord()[z]);
 						}
 						System.out.println(this.myCoordString());
 						/**************************************************/
+					}else {
+						if (chevauchement) {
+							System.out.println("Le bateau va chevaucher une position déjà occupée");
+						} else {
+							if (s.getSize() > 5) {
+								System.out.println("Size Ship > 5 -- Try Again");
+							} else {
+								System.out.println("Vous avez atteint le nombre limite de " + s.getName() + "s");
+								System.out.println("Choississez un autre type de bateau --------------");
+							}
+						}
+						ajoute = false;
 					}
+				afficheFlotteDetails();
+				} catch (Exception e) {
+					System.out.println("Size Ship == 1 --> Try again");
+				}
+			}
+		}
 			
 			
 			
