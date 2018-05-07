@@ -1,19 +1,21 @@
 import java.util.ArrayList;
 import java.util.Random;
-import java.util.Scanner;
 
-public class Robot extends Player {
+public class IAmedium extends Player implements IA {
+
 	private Coordonnee lastShoot;
 	private boolean firstShoot;
 
-	public Robot(String nom) {
+	public IAmedium(String nom) {
 		super(nom);
 		lastShoot = new Coordonnee();
 		firstShoot = true;
+
+		// TODO Auto-generated constructor stub
 	}
 
-	public void creationFlotte() {
-
+	@Override
+	public void createFleet() {
 		int i = 2;
 		int nb = 0;
 		while (nb < 5) {
@@ -44,13 +46,8 @@ public class Robot extends Player {
 				int valEnd = 0 + endV.nextInt(tabCoords.size() - 0);
 
 				Ship s = new Ship(start.getCoordonnee(), tabCoords.get(valEnd).getCoordonnee());
-				if (i == 3) {
 
-					s.setNameCruiser();
-				} else if (i == 6) {
-					s.setNameSub();
-				}
-				System.out.println("Ship: " + s.getName() + " Size: " + s.getSize());
+				System.out.println("Ship Size: " + s.getSize());
 				for (Coordonnee c : s.getTabCoord()) {
 					System.out.println(c.getCoordonnee());
 				}
@@ -68,38 +65,39 @@ public class Robot extends Player {
 	}
 
 	@Override
-	public void shootProcess(Player monPlayer, Player monAdversaire) {
+	public void shoot(Player monPlayer, Player monAdversaire) {
 
 		System.out.println("LastShoot: " + lastShoot.getCoordonnee());
 
 		Coordonnee c = new Coordonnee();
 
 		boolean okTir = false;
+		boolean okCoord = false;
 		boolean contains = false;
 		/************* Partie 1 **************/
-		
-			if (firstShoot) {
-				c = lastShoot.coordRandomMiddle();
-				firstShoot = false;
-			} else {
+
+		if (firstShoot) {
+			c = lastShoot.coordRandomMiddle();
+			firstShoot = false;
+		} else {
 
 				if (lastShoot.getHit() == 1) {
-					 // On prend la taille la plus petite de bateau
+					// On prend la taille la plus petite de bateau
 					ArrayList<Coordonnee> tabCoords = lastShoot.getPossibilities(2);
 					Random rdC = new Random();
 					int valeurC = 0 + rdC.nextInt(2 - 0);
-					
+
 					c = tabCoords.get(valeurC);
 				} else {
 					c = lastShoot.coordRandom();
 				}
-			}
+		
+				
 			
-			
-			if(!contains) {
-				okTir = true;
-			}
-			
+
+		}
+
+
 		System.out.println("Tir: " + c.getCoordonnee());
 
 		/************ Partie 2 *************/
@@ -117,8 +115,6 @@ public class Robot extends Player {
 				if (s1.isDestroyed()) {
 					shipDelete = s1;
 					destroyed = true;
-				} else {
-					System.out.println("Pas coulé");
 				}
 			}
 		}

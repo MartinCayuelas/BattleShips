@@ -8,20 +8,25 @@ public class Player {
 	private ArrayList<Ship> Flotte;
 	private ArrayList<Coordonnee> myCoords;
 
-	/***Avec L'IA***/
-	//Cela passera dans Human 
-	
+	private int nbCarrier;
+	private int nbCruiser;
+	private int nbBattleship;
+	private int nbSubmarine;
+	private int nbDestroyer;
 
 	public Player(String nom) {
 		name = nom;
 		score = 0;
 		Flotte = new ArrayList<Ship>();
 		myCoords = new ArrayList<Coordonnee>();
-		
+		nbCarrier = 0;
+		nbCruiser = 0;
+		nbBattleship = 0;
+		nbSubmarine = 0;
+		nbDestroyer = 0;
 
 	}
 
-	/*************Getters/setters******************/
 	public String getName() {
 		return name;
 	}
@@ -50,54 +55,59 @@ public class Player {
 	 * Creation / Incrémentation nb Bateaux et vérifications
 	 ***********/
 
-	
-	
-	/*********Gestion du Tir***************/
-	
-	public void shootProcess(Player monPlayer, Player monAdversaire) {
-		Coordonnee c = new Coordonnee();
-		c = c.tir(monPlayer);
-		String tir1 = c.getCoordonnee();
-		boolean touche = false;
-		boolean destroyed = false;// variable pour supprimer un bateau si jamais il est coulé
-		Ship shipDelete = new Ship();// Bateau fictif pour les vérifications +
-		// Si jamais aucun bateau n'est touché on peut dire que la position de tir est
-		// ratée
-		for (Ship s1 : monAdversaire.getFlotte()) {
-			if (s1.isHit(tir1)) {
-				touche = true;
-				c.setHit();
-				monPlayer.getMyCoords().add(c);
-				if (s1.isDestroyed()) {
-					shipDelete = s1;
-					destroyed = true;
-				} else {
-					System.out.println("Pas coulé");
-				}
+	public String afficheFlotteDetails() {
+		String str = "Carriers (Taille 5): " + this.getNbCarrier() + "\n";
+		str += "Cruisers (Taille 3): " + this.getNbCruiser() + "\n";
+		str += "Battleships (Taille 4): " + this.getNbBattleship() + "\n";
+		str += "Destroyers (Taille 2): " + this.getNbDestroyer() + "\n";
+		str += "Submarines (Taille 3): " + this.getNbSubmarine() + "\n";
+
+		return str;
+
+	}
+
+	void incrementeTypeBateau(int size) {
+		if (size == 2) {
+			this.setNbDestroyer();
+		} else if (size == 4) {
+			this.setNbBattleship();
+		} else if ((size == 3) && (this.getNbCruiser() < 1)) {
+			this.setNbCruiser();
+		} else if ((size == 3)) {
+			this.setNbSubmarine();
+			;
+		} else { // Taille == 5
+			this.setNbCarrier();
+		}
+
+	}
+
+	public boolean verificationAjout(int size) {
+		// retourne vrai si ajout Possible en fonction du nombre de bateaux du même type
+		boolean ajout = false;
+
+		if (size == 2) {
+			if (this.getNbDestroyer() < 1) {
+				ajout = true;
+			}
+		} else if (size == 5) {
+			if (this.getNbCarrier() < 1) {
+				ajout = true;
+			}
+		} else if (size == 4) {
+			if (this.getNbBattleship() < 1) {
+				ajout = true;
+			}
+		} else {
+			if (this.getNbCruiser() < 1) {
+				ajout = true;
+			} else if (this.getNbSubmarine() < 1) {
+				ajout = true;
 			}
 		}
-		if (touche) {
-			System.out.println("Touché");
-		} else {
-			monPlayer.getMyCoords().add(c);
-			System.out.println("Raté");
-		}
+		return ajout;
 
-		if (destroyed) {
-			System.out.println("Coulé");
-			monAdversaire.getFlotte().remove(shipDelete);
-			System.out.println("Il reste " + monAdversaire.getFlotte().size() + " bateaux à couler");
-			int score = monPlayer.getScore() + 1;
-			monPlayer.setScore(score);
-		}
 	}
-	
-
-
-
-	
-
-	
 
 	public boolean verificationChevauchement(Ship shipTraite) {
 		boolean coordEgale = false;
@@ -116,6 +126,15 @@ public class Player {
 			}
 		}
 		return coordEgale;
+	}
+
+	public String mYcoordsString() {
+		String str ="[";
+		int i = 0;
+		while(i < this.myCoords.size()) {
+			str+=this.myCoords.get(i).getCoordonnee()+" ";
+		}
+		return str;
 	}
 
 	@Override
@@ -139,9 +158,11 @@ public class Player {
 			l++; // On change la lettre
 			cpt++;
 		}
+
 		str += lettres + "\n";
 		letter = "A";
 		l = letter.charAt(0);
+
 		int u = 0;
 		int w;
 		while (u < 10) {
@@ -149,15 +170,18 @@ public class Player {
 			str += (u + 1) + "	";
 			int nb = u + 1;
 			while (w < 10) {
+
 				String maCoord = l + "" + nb;
 				boolean equal = false;
 				boolean touche = false;
 				Coordonnee c = new Coordonnee(maCoord);
 				for (Coordonnee coord : this.getMyCoords()) {
+					// System.out.println("c:"+coord.getCoordonnee()+" hit: "+coord.getHit());
 					if (coord.getCoordonnee().equals(c.getCoordonnee())) {
 						equal = true;
 						if (coord.getHit() == 1) {
 							touche = true;
+
 						}
 					}
 				}
@@ -170,6 +194,7 @@ public class Player {
 				} else {
 					str += "" + "〰️" + "\t";
 				}
+
 				w++;
 				l++;
 			}
@@ -181,6 +206,44 @@ public class Player {
 		return str;
 	}
 
-	
+	public int getNbCarrier() {
+		return nbCarrier;
+	}
+
+	public void setNbCarrier() {
+		this.nbCarrier += 1;
+	}
+
+	public int getNbCruiser() {
+		return nbCruiser;
+	}
+
+	public void setNbCruiser() {
+		this.nbCruiser += 1;
+	}
+
+	public int getNbBattleship() {
+		return nbBattleship;
+	}
+
+	public void setNbBattleship() {
+		this.nbBattleship += 1;
+	}
+
+	public int getNbSubmarine() {
+		return nbSubmarine;
+	}
+
+	public void setNbSubmarine() {
+		this.nbSubmarine += 1;
+	}
+
+	public int getNbDestroyer() {
+		return nbDestroyer;
+	}
+
+	public void setNbDestroyer() {
+		this.nbDestroyer += 1;
+	}
 
 }

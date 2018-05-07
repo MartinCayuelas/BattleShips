@@ -1,14 +1,14 @@
-import java.util.Scanner;
+import java.util.ArrayList;
+import java.util.Random;
 
-public class Coordonnee  {
+public class Coordonnee {
 
 	private char partOne;
 	private int partTwo;
 	private int hit;
-	
-	public Coordonnee() {}
 
-	public Coordonnee(String coord) {
+	public Coordonnee() {};
+	public Coordonnee(String coord){
 
 		if (coord.length() == 3) {
 			coord = coord.substring(0, 1).toUpperCase() + coord.substring(1, 2) + coord.substring(2, 3);
@@ -24,8 +24,7 @@ public class Coordonnee  {
 			}
 			hit = 0;
 		} else {
-				coord = coord.substring(0, 1).toUpperCase() + coord.substring(1, 2);
-			
+			coord = coord.substring(0, 1).toUpperCase() + coord.substring(1, 2);
 
 			partOne = coord.charAt(0);
 			try {
@@ -42,7 +41,7 @@ public class Coordonnee  {
 		return partOne;
 	}
 
-	public void setPartOne(char partOne){
+	public void setPartOne(char partOne) {
 		this.partOne = partOne;
 	}
 
@@ -71,18 +70,11 @@ public class Coordonnee  {
 	boolean coordCorrect(String coord) {
 		boolean coordOk = false;
 		String tab[] = { "A", "B", "C", "D", "E", "F", "G", "H", "I", "J" };
-		String partOne="";
-		String partTwo="";
-		try{
+		String partOne;
+		String partTwo;
+
 		partOne = coord.substring(0, 1).toUpperCase(); // Debut
-		}catch(Exception e) {
-			System.out.println("Partie 1 manquante");
-		}
-		try{
-			partTwo = coord.substring(1, 2); // end
-		}catch(Exception e) {
-			System.out.println("Partie 2 manquante");
-		}
+		partTwo = coord.substring(1, 2); // end
 
 		if (coord.length() == 3) {
 			String partThree;
@@ -124,20 +116,81 @@ public class Coordonnee  {
 		return superieur;
 	}
 	
-	public Coordonnee tir(Player p) {
-		boolean tirOk = false;
-		String tir1 = "";
-		Coordonnee c = new Coordonnee();
-		while (!tirOk) {
-			Scanner tir = new Scanner(System.in);
-			System.out.println("Veuillez saisir une coordonnée de tir ( " + p.getName() + " ) :");
-			tir1 = tir.nextLine();
-			if(tirOk = c.coordCorrect(tir1)) {
-			 c = new Coordonnee(tir1);
-			}
+	
+	
+	/***************** Pour le robot **************/
+
+	public ArrayList<Coordonnee> getPossibilities(int sizeBoat) {
+		ArrayList<Coordonnee> shipCoords = new ArrayList<Coordonnee>();
+
+		int i = 0;
+		char lettre = this.getPartOne();
+		char lSup = lettre;
+		char lInf = lettre;
+		while (i < sizeBoat - 1) {
+			i++;
+			lSup++;
+			lInf--;
+
 		}
-		System.out.println("missile  -------------" + tir1);
-		
-		return c;
+		// Chiffre change
+		if ((this.getPartTwo() + i) <= 10) {
+			int v = this.getPartTwo() + i;
+			String c = this.getPartOne() + "" + v;
+			Coordonnee maCoord = new Coordonnee(c);
+			shipCoords.add(maCoord);
+		}
+		if ((this.getPartTwo() - i) > 0) {
+			int v = this.getPartTwo() - i;
+			String c = this.getPartOne() + "" + v;
+			Coordonnee maCoord = new Coordonnee(c);
+			shipCoords.add(maCoord);
+		}
+
+		// lettre change
+
+		if (lSup <= 'J') {
+			String c = lSup + "" + this.getPartTwo();
+			Coordonnee maCoord = new Coordonnee(c);
+			shipCoords.add(maCoord);
+		}
+		if (lInf >= 'A') {
+			String c = lInf + "" + this.getPartTwo();
+			Coordonnee maCoord = new Coordonnee(c);
+			shipCoords.add(maCoord);
+		}
+
+		return shipCoords;
 	}
+
+	public static Coordonnee coordRandom() {
+		Random rdL = new Random();
+		int valeurL = 1 + rdL.nextInt(11 - 1);
+		Random rdC = new Random();
+		int valeurC = 1 + rdC.nextInt(11 - 1);
+
+		String tab[] = { "A", "B", "C", "D", "E", "F", "G", "H", "I", "J" };
+		String partOne = tab[valeurL - 1];
+		String coord = partOne + "" + valeurC;
+		Coordonnee start = new Coordonnee(coord);
+
+		return start;
+	}
+
+	public static Coordonnee coordRandomMiddle() {
+		Random rdL = new Random();
+		int valeurL = 1 + rdL.nextInt(6 - 1);
+		Random rdC = new Random();
+		int valeurC = 3 + rdC.nextInt(8 - 3);
+
+		String tab[] = { "C", "D", "E", "F", "G" };
+		String partOne = tab[valeurL - 1];
+		String coord = partOne + "" + valeurC;
+		Coordonnee start = new Coordonnee(coord);
+
+		return start;
+	}
+
+	
+	
 }
