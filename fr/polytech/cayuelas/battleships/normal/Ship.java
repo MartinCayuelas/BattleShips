@@ -1,3 +1,5 @@
+package fr.polytech.cayuelas.battleships.normal;
+
 import java.util.Scanner;
 
 

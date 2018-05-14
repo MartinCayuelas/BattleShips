@@ -1,3 +1,5 @@
+package fr.polytech.cayuelas.battleships.normal;
+
 
 public class Human extends Player {
 

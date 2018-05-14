@@ -1,15 +1,16 @@
+package fr.polytech.cayuelas.battleships.ia;
+
+import fr.polytech.cayuelas.battleships.normal.Player;
+import fr.polytech.cayuelas.battleships.normal.Coordonnee;
+import fr.polytech.cayuelas.battleships.normal.Ship;
+
 import java.util.ArrayList;
 import java.util.Random;
 
 public class IAmedium extends Player implements IA {
 
-	private Coordonnee lastShoot;
-	private boolean firstShoot;
-
 	public IAmedium(String nom) {
 		super(nom);
-		lastShoot = new Coordonnee();
-		firstShoot = true;
 
 		// TODO Auto-generated constructor stub
 	}
@@ -37,24 +38,22 @@ public class IAmedium extends Player implements IA {
 				} else {
 					tabCoords = start.getPossibilities(i);
 				}
-				/*
-				 * for (Coordonnee c : tabCoords) { System.out.println("Cooordonnee: " +
-				 * c.getCoordonnee()); }
-				 */
 
 				Random endV = new Random();
 				int valEnd = 0 + endV.nextInt(tabCoords.size() - 0);
 
 				Ship s = new Ship(start.getCoordonnee(), tabCoords.get(valEnd).getCoordonnee());
 
-				System.out.println("Ship Size: " + s.getSize());
-				for (Coordonnee c : s.getTabCoord()) {
-					System.out.println(c.getCoordonnee());
-				}
+				
 				boolean chevauchement = this.verificationChevauchement(s);
 				if (!chevauchement) {
 					this.getFlotte().add(s); // Ajout du Bateau à la flotte du Robot
 					ajoute = true; // On a ajouté le Bateau
+					
+					System.out.println("Ship Size: " + s.getSize());
+					for (Coordonnee c : s.getTabCoord()) {
+						System.out.println(c.getCoordonnee());
+					}
 					i++;
 					nb++;
 				}
@@ -67,36 +66,21 @@ public class IAmedium extends Player implements IA {
 	@Override
 	public void shoot(Player monPlayer, Player monAdversaire) {
 
-		System.out.println("LastShoot: " + lastShoot.getCoordonnee());
-
 		Coordonnee c = new Coordonnee();
+		boolean tirOk = false;
+		while (!tirOk) {
 
-		boolean okTir = false;
-		boolean okCoord = false;
-		boolean contains = false;
-		/************* Partie 1 **************/
-
-		if (firstShoot) {
-			c = lastShoot.coordRandomMiddle();
-			firstShoot = false;
-		} else {
-
-				if (lastShoot.getHit() == 1) {
-					// On prend la taille la plus petite de bateau
-					ArrayList<Coordonnee> tabCoords = lastShoot.getPossibilities(2);
-					Random rdC = new Random();
-					int valeurC = 0 + rdC.nextInt(2 - 0);
-
-					c = tabCoords.get(valeurC);
-				} else {
-					c = lastShoot.coordRandom();
-				}
-		
+			c = Coordonnee.coordRandom();
+			if (monPlayer.isShooted(c.getCoordonnee())) {
+				tirOk = false;
 				
-			
+
+			} else {
+				tirOk = true;
+				
+			}
 
 		}
-
 
 		System.out.println("Tir: " + c.getCoordonnee());
 
@@ -139,7 +123,6 @@ public class IAmedium extends Player implements IA {
 
 		// Si non touché, faire un pseudo random en regardant les bateaux restants
 
-		lastShoot = c;
 	}
 
 }
