@@ -8,7 +8,7 @@ public class Player {
 	private String name;
 	private int score;
 	private ArrayList<Ship> Flotte;
-	private ArrayList<Coordonnee> myCoords;
+	private ArrayList<Coordonnee> myCoordsShooted;
 
 	private int nbCarrier;
 	private int nbCruiser;
@@ -21,7 +21,7 @@ public class Player {
 		name = nom;
 		score = 0;
 		Flotte = new ArrayList<Ship>();
-		myCoords = new ArrayList<Coordonnee>();
+		myCoordsShooted = new ArrayList<Coordonnee>();
 		nbCarrier = 0;
 		nbCruiser = 0;
 		nbBattleship = 0;
@@ -50,8 +50,8 @@ public class Player {
 		return Flotte;
 	}
 
-	public ArrayList<Coordonnee> getMyCoords() {
-		return myCoords;
+	public ArrayList<Coordonnee> getmyCoordsShooted() {
+		return myCoordsShooted;
 	}
 
 	/***************
@@ -131,14 +131,14 @@ public class Player {
 		return coordEgale;
 	}
 
-	public String mYcoordsString() {
+	/*public String myCoordsShootedString() {
 		String str ="[";
 		int i = 0;
-		while(i < this.myCoords.size()) {
-			str+=this.myCoords.get(i).getCoordonnee()+" ";
+		while(i < this.myCoordsShooted.size()) {
+			str+=this.myCoordsShooted.get(i).getCoordonnee()+" ";
 		}
 		return str;
-	}
+	}*/
 
 	@Override
 	public String toString() {
@@ -153,7 +153,7 @@ public class Player {
 	public boolean isShooted(String shoot) {
 		boolean inList = false;
 		int i = 0;
-		for(Coordonnee coord : myCoords) {
+		for(Coordonnee coord : myCoordsShooted) {
 			if(coord.equals(shoot)) {
 				inList=true;
 			}
@@ -163,7 +163,7 @@ public class Player {
 	
 	
 	
-	public String myCoordString() {
+	public String myCoordsShootedString() {
 		String str = "";
 		String lettres = "	";
 		String letter = "A";
@@ -191,7 +191,7 @@ public class Player {
 				boolean equal = false;
 				boolean touche = false;
 				Coordonnee c = new Coordonnee(maCoord);
-				for (Coordonnee coord : this.getMyCoords()) {
+				for (Coordonnee coord : this.getmyCoordsShooted()) {
 					// System.out.println("c:"+coord.getCoordonnee()+" hit: "+coord.getHit());
 					if (coord.getCoordonnee().equals(c.getCoordonnee())) {
 						equal = true;

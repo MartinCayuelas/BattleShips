@@ -95,9 +95,9 @@ public class MainPlayerIA {
 						System.out.println(player1.afficheFlotteDetails());
 						/**** Partie Affichage "Grille" du Joueur ******/
 						for (int z = 0; z < s.getSize(); z++) {
-							player1.getMyCoords().add(s.getTabCoord()[z]);
+							player1.getmyCoordsShooted().add(s.getTabCoord()[z]);
 						}
-						System.out.println(player1.myCoordString());
+						System.out.println(player1.myCoordsShootedString());
 						/**************************************************/
 					} else {
 						if (chevauchement) {
@@ -124,8 +124,8 @@ public class MainPlayerIA {
 		System.out.println(" 〰️ -> Eau (possiblement)");
 		System.out.println(" ⛴ -> Touché");
 		System.out.println(" X -> Raté");
-		player1.getMyCoords().clear();
-		ia.getMyCoords().clear();
+		player1.getmyCoordsShooted().clear();
+		ia.getmyCoordsShooted().clear();
 
 		boolean end = false;
 		while ((player1.getFlotte().size() != 0) && (ia.getFlotte().size() != 0)) {
@@ -134,7 +134,7 @@ public class MainPlayerIA {
 
 			System.out.println("Player  : " + player1.getName());
 			System.out.println("Grille : -------------------------------");
-			System.out.println(player1.myCoordString());
+			System.out.println(player1.myCoordsShootedString());
 			boolean tirOk = false;
 			String tir1 = "";
 			Coordonnee c = null;
@@ -157,7 +157,7 @@ public class MainPlayerIA {
 				if (s1.isHit(c.getCoordonnee())) {
 					touche = true;
 					c.setHit();
-					player1.getMyCoords().add(c);
+					player1.getmyCoordsShooted().add(c);
 					if (s1.isDestroyed()) {
 						shipDelete = s1;
 						destroyed = true;
@@ -167,7 +167,7 @@ public class MainPlayerIA {
 			if (touche) {
 				System.out.println("Touché");
 			} else {
-				player1.getMyCoords().add(c);
+				player1.getmyCoordsShooted().add(c);
 				System.out.println("Raté");
 			}
 
@@ -186,7 +186,7 @@ public class MainPlayerIA {
 			if (!end) {
 				System.out.println("Player  : " + ia.getName());
 				System.out.println("Grille : -------------------------------");
-				System.out.println(ia.myCoordString());
+				System.out.println(ia.myCoordsShootedString());
 				ia.shoot(ia, player1);
 			}
 		}

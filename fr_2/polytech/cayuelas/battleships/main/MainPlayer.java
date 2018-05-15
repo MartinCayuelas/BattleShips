@@ -1,7 +1,7 @@
-package ig.polytech.cayuelas.battleships.main;
-import ig.polytech.cayuelas.battleships.normal.Human;
-import ig.polytech.cayuelas.battleships.normal.Coordonnee;
-import ig.polytech.cayuelas.battleships.normal.Ship;
+package fr.polytech.cayuelas.battleships.main;
+import fr.polytech.cayuelas.battleships.normal.Human;
+import fr.polytech.cayuelas.battleships.normal.Coordonnee;
+import fr.polytech.cayuelas.battleships.normal.Ship;
 
 import java.util.ArrayList;
 import java.util.Random;
@@ -43,7 +43,7 @@ public class MainPlayer {
 							System.out.println("Veuillez saisir une coordonnée de début :");
 							Scanner sc3 = new Scanner(System.in);
 							start = sc3.nextLine();
-							if (start.length() > 1) {
+							if (start.length() > 1 && start.length() <=3) {
 								Coordonnee coord = new Coordonnee(start);
 								coordOk = coord.coordCorrect(start);
 								System.out.println("Vous avez saisi : " + start);
@@ -54,7 +54,7 @@ public class MainPlayer {
 							System.out.println("Veuillez saisir une coordonnée de fin :");
 							Scanner sc4 = new Scanner(System.in);
 							end = sc4.nextLine();
-							if (end.length() > 1) {
+							if (end.length() > 1 && end.length() <=3) {
 								Coordonnee coord = new Coordonnee(end);
 								coordOk = coord.coordCorrect(end);
 								System.out.println("Vous avez saisi : " + end);
@@ -71,7 +71,7 @@ public class MainPlayer {
 						boolean chevauchement = p.verificationChevauchement(s);
 						boolean okAjout = p.verificationAjout(s.getSize());
 
-						if (okAjout && !chevauchement) {
+						if (okAjout && !chevauchement && s.getSize() < 6) {
 							p.getFlotte().add(s); // Ajout du Bateau à la flotte du joueur
 							/********** Partie Incrémentation nombre de Bateaux du Joueur **********/
 							p.incrementeTypeBateau(s.getSize());
@@ -90,13 +90,11 @@ public class MainPlayer {
 							if (chevauchement) {
 								System.out.println("Le bateau va chevaucher une position déjà occupée");
 							} else {
-								if (s.getSize() > 5) {
-									System.out.println("Size Ship > 5 -- Try Again");
-								} else {
+								
 									System.out.println(
-											"Vous ne pouvez plus ajouetr de bateaux de taille: " + s.getSize());
+											"Vous ne pouvez plus ajouter de bateaux de taille: " + s.getSize());
 									System.out.println("Choississez un autre type de bateau --------------");
-								}
+								
 							}
 							System.out.println(p.afficheFlotteDetails());
 							ajoute = false;

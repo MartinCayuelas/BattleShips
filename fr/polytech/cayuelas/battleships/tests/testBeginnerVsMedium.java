@@ -10,7 +10,7 @@ public class testBeginnerVsMedium {
 
 		int scoreB = 0;
 		int scoreM = 0;
-
+		int tourMoyen = 0;
 		for (int i = 0; i < 100; i++) {
 
 			/**************** Init IA 1 ***********/
@@ -22,7 +22,7 @@ public class testBeginnerVsMedium {
 			IAmedium medium = new IAmedium("Aragorn");
 			medium.createFleet();
 			System.out.println(medium.getFlotte());
-
+			int j = 0;
 			boolean end = false;
 			while ((beginner.getFlotte().size() != 0) && (medium.getFlotte().size() != 0)) {
 				System.out.println("Beginner_-----------------------------");
@@ -34,6 +34,7 @@ public class testBeginnerVsMedium {
 				if(!end) {
 				System.out.println("Medium_-----------------------------");
 				medium.shoot(medium, beginner);
+				j++;
 				}
 			}
 			if ((beginner.getFlotte().size() == 0)) {
@@ -41,10 +42,13 @@ public class testBeginnerVsMedium {
 			} else {
 				scoreB += 1;
 			}
+			tourMoyen += j;
 		}
 
 		System.out.println("Score de IA Beginner: " + scoreB);
 		System.out.println("Score de IA Medium: " + scoreM);
+		System.out.println("IA Medium coule la flotte en : " + (tourMoyen/100)+" coups en moyenne");
+		
 
 	}
 

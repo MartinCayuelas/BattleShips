@@ -10,6 +10,7 @@ public class testBeginnerVsHard {
 		
 		int scoreB = 0;
 		int scoreM = 0;
+		int tourMoyen = 0;
 
 		for (int i = 0; i < 100; i++) {
 
@@ -22,7 +23,7 @@ public class testBeginnerVsHard {
 			IAhard hard = new IAhard("Aragorn");
 			hard.createFleet();
 			System.out.println(hard.getFlotte());
-
+			int j = 1;
 			boolean end = false;
 			while ((beginner.getFlotte().size() != 0) && (hard.getFlotte().size() != 0)) {
 				System.out.println("Player  : " + beginner.getName());
@@ -38,6 +39,7 @@ public class testBeginnerVsHard {
 				System.out.println("Grille : -------------------------------");
 				//System.out.println(hard.myCoordString());
 				hard.shoot(hard, beginner);
+				j++;
 				}
 				System.out.println("Partie : "+ (i+1));
 				//System.out.println(medium.mYcoordsString());
@@ -47,10 +49,14 @@ public class testBeginnerVsHard {
 			} else {
 				scoreB += 1;
 			}
+			
+			tourMoyen += j;
 		}
 
 		System.out.println("Score de IA Beginner: " + scoreB);
 		System.out.println("Score de IA Hard: " + scoreM);
+		System.out.println("IA Hard coule la flotte en : " + (tourMoyen/100)+" coups en moyenne");
+		
 
 	
 	}

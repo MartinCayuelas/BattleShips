@@ -1,4 +1,4 @@
-package ig.polytech.cayuelas.battleships.normal;
+package fr.polytech.cayuelas.battleships.normal;
 
 import java.util.ArrayList;
 import java.util.Scanner;
@@ -16,6 +16,7 @@ public class Player {
 	private int nbSubmarine;
 	private int nbDestroyer;
 
+	public Player() {}
 	public Player(String nom) {
 		name = nom;
 		score = 0;
@@ -149,6 +150,19 @@ public class Player {
 		return st;
 	}
 
+	public boolean isShooted(String shoot) {
+		boolean inList = false;
+		int i = 0;
+		for(Coordonnee coord : myCoords) {
+			if(coord.equals(shoot)) {
+				inList=true;
+			}
+		}
+		return inList;
+	}
+	
+	
+	
 	public String myCoordString() {
 		String str = "";
 		String lettres = "	";
@@ -208,6 +222,10 @@ public class Player {
 		return str;
 	}
 
+	public void createFleet() {
+		
+	}
+	public void shoot(Player p, Player p2) {}
 	public int getNbCarrier() {
 		return nbCarrier;
 	}

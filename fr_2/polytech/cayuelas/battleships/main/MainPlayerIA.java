@@ -1,16 +1,17 @@
-package ig.polytech.cayuelas.battleships.main;
-import ig.polytech.cayuelas.battleships.normal.Human;
-import ig.polytech.cayuelas.battleships.normal.Coordonnee;
-import ig.polytech.cayuelas.battleships.normal.Ship;
-import ig.polytech.cayuelas.battleships.ia.IAbeginner;
-import ig.polytech.cayuelas.battleships.ia.IAmedium;
-import ig.polytech.cayuelas.battleships.ia.IAhard;
+package fr.polytech.cayuelas.battleships.main;
 
 import java.util.ArrayList;
 import java.util.Random;
 
-
 import java.util.Scanner;
+
+import fr.polytech.cayuelas.battleships.ia.IAbeginner;
+import fr.polytech.cayuelas.battleships.ia.IAhard;
+import fr.polytech.cayuelas.battleships.ia.IAmedium;
+import fr.polytech.cayuelas.battleships.normal.Coordonnee;
+import fr.polytech.cayuelas.battleships.normal.Human;
+import fr.polytech.cayuelas.battleships.normal.Player;
+import fr.polytech.cayuelas.battleships.normal.Ship;
 
 public class MainPlayerIA {
 
@@ -20,10 +21,29 @@ public class MainPlayerIA {
 		Scanner sc = new Scanner(System.in);
 		String name = sc.nextLine();
 		Human player1 = new Human(name);
-
+		
+		System.out.println("Entrez le niveau de l'IA");
+		Scanner scAi = new Scanner(System.in);
+		int choix = scAi.nextInt();
+		/**************** Init IA ***********/
+		 
+		Player ia = new Player();
+		if(choix == 1){
+			ia = new IAbeginner("Frodon");
+			System.out.println("Je suis beginner");
+		}else if(choix == 2){
+			ia = new IAmedium("Aragorn");
+			System.out.println("Je suis medium");
+		}else {
+			ia = new IAhard("Gandalf");
+			System.out.println("Je suis hard");
+		}
+		
+		ia.createFleet();
+		System.out.println(ia.getFlotte());
 		/********** Init Player *******/
 		int i = 0;
-		while (i < 5) {
+		while (i < 2 ) {
 			boolean ajoute = false;
 			while (!ajoute) {
 				String start = "";
@@ -36,7 +56,7 @@ public class MainPlayerIA {
 						System.out.println("Veuillez saisir une coordonnée de début :");
 						Scanner sc3 = new Scanner(System.in);
 						start = sc3.nextLine();
-						if (start.length() > 1) {
+						if (start.length() > 1 && start.length() <=3) {
 							Coordonnee coord = new Coordonnee(start);
 							coordOk = coord.coordCorrect(start);
 							System.out.println("Vous avez saisi : " + start);
@@ -47,7 +67,7 @@ public class MainPlayerIA {
 						System.out.println("Veuillez saisir une coordonnée de fin :");
 						Scanner sc4 = new Scanner(System.in);
 						end = sc4.nextLine();
-						if (end.length() > 1) {
+						if (end.length() > 1 && end.length() <=3) {
 							Coordonnee coord = new Coordonnee(end);
 							coordOk = coord.coordCorrect(end);
 							System.out.println("Vous avez saisi : " + end);
@@ -64,7 +84,7 @@ public class MainPlayerIA {
 					boolean chevauchement = player1.verificationChevauchement(s);
 					boolean okAjout = player1.verificationAjout(s.getSize());
 
-					if (okAjout && !chevauchement) {
+					if (okAjout && !chevauchement  && s.getSize() <6) {
 						player1.getFlotte().add(s); // Ajout du Bateau à la flotte du joueur
 						/********** Partie Incrémentation nombre de Bateaux du Joueur **********/
 						player1.incrementeTypeBateau(s.getSize());
@@ -83,12 +103,9 @@ public class MainPlayerIA {
 						if (chevauchement) {
 							System.out.println("Le bateau va chevaucher une position déjà occupée");
 						} else {
-							if (s.getSize() > 5) {
-								System.out.println("Size Ship > 5 -- Try Again");
-							} else {
-								System.out.println("Vous ne pouvez plus ajouetr de bateaux de taille: " + s.getSize());
+								System.out.println("Vous ne pouvez pas ajouter de bateaux de taille: " + s.getSize());
 								System.out.println("Choississez un autre type de bateau --------------");
-							}
+							
 						}
 						System.out.println(player1.afficheFlotteDetails());
 						ajoute = false;
@@ -100,10 +117,7 @@ public class MainPlayerIA {
 		}
 		System.out.println(player1.getFlotte());
 
-		/**************** Init IA ***********/
-		IAhard ia = new IAhard("Gandalf");
-		ia.createFleet();
-		System.out.println(ia.getFlotte());
+		
 
 		System.out.println("---------Début de la partie-----------");
 		System.out.println("Les indications : ");
@@ -113,7 +127,6 @@ public class MainPlayerIA {
 		player1.getMyCoords().clear();
 		ia.getMyCoords().clear();
 
-		
 		boolean end = false;
 		while ((player1.getFlotte().size() != 0) && (ia.getFlotte().size() != 0)) {
 			// Tant que un des deux joueurs n'a pas perdu tous ses bateaux la partie
@@ -167,15 +180,14 @@ public class MainPlayerIA {
 			}
 			System.out.println("------------Changement de tour--------------");
 
-			
 			if ((ia.getFlotte().size() == 0)) {
 				end = true;
 			}
-			if(!end) {
-			System.out.println("Player  : " + ia.getName());
-			System.out.println("Grille : -------------------------------");
-			System.out.println(ia.myCoordString());
-			ia.shoot(ia, player1);
+			if (!end) {
+				System.out.println("Player  : " + ia.getName());
+				System.out.println("Grille : -------------------------------");
+				System.out.println(ia.myCoordString());
+				ia.shoot(ia, player1);
 			}
 		}
 		System.out.println("------------Partie Terminée-----------");
@@ -186,5 +198,6 @@ public class MainPlayerIA {
 		}
 		System.out.println("Score de " + player1.getName() + " : " + player1.getScore());
 		System.out.println("Score de " + ia.getName() + " : " + ia.getScore());
+
 	}
 }

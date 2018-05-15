@@ -1,21 +1,19 @@
-package ig.polytech.cayuelas.battleships.ia;
+package fr.polytech.cayuelas.battleships.ia;
 
-import ig.polytech.cayuelas.battleships.normal.Player;
-import ig.polytech.cayuelas.battleships.normal.Coordonnee;
-import ig.polytech.cayuelas.battleships.normal.Ship;
+import fr.polytech.cayuelas.battleships.normal.Player;
+import fr.polytech.cayuelas.battleships.normal.Coordonnee;
+import fr.polytech.cayuelas.battleships.normal.Ship;
 
 import java.util.ArrayList;
 import java.util.Random;
 
 public class IAhard extends Player implements IA {
 
-	private Coordonnee lastShoot;
-	private boolean firstShoot;
+	private ArrayList<Coordonnee> coordHitedShip; //Liste de coordonnée touchée (Hit == 1 )
 
 	public IAhard(String nom) {
 		super(nom);
-		lastShoot = new Coordonnee();
-		firstShoot = true;
+		coordHitedShip = new ArrayList<Coordonnee>();
 		// TODO Auto-generated constructor stub
 	}
 
@@ -23,9 +21,8 @@ public class IAhard extends Player implements IA {
 	public void createFleet() {
 		// TODO Auto-generated method stub
 
-		this.createCruiser();
-
 		this.createDestroyer();
+		this.createCruiser();
 
 		this.createSubmarine();
 
@@ -39,43 +36,72 @@ public class IAhard extends Player implements IA {
 	public void shoot(Player monPlayer, Player monAdversaire) {
 		Coordonnee c = new Coordonnee();
 
-		System.out.println("LastShoot: " + lastShoot.getCoordonnee());
-		boolean okTir = false;
-		boolean okCoord = false;
-		boolean contains = false;
-		/************* Partie 1 **************/
+		// System.out.println("Je vais tirer");
+		if(monPlayer.getMyCoords().size() == 0) {
+		
+			boolean tirPossible = false;
 
-		if (firstShoot) {
-			c = Coordonnee.coordRandomMiddle();
-			firstShoot = false;
-		} else {
-
-			if (lastShoot.getHit() == 1) {
-				// On prend la taille la plus petite de bateau
-				ArrayList<Coordonnee> tabCoords = lastShoot.getPossibilities(2);
-				Random rdC = new Random();
-				int valeurC = 0 + rdC.nextInt(2 - 0);
-				
-					c = tabCoords.get(valeurC);
-					
-
-				System.out.println("Je peux tirer ===========================  == 1");
-			} else {
-				boolean ok = false;
-				while (!ok) {
-					c = Coordonnee.coordRandom();
-					if (IAhard.isContained(c, monPlayer)) {
-						ok = false;
-					} else {
-						ok = true;
-					}
+			while (!tirPossible) {
+				c = Coordonnee.coordRandomMiddle();
+				if (c.isPair()) {
+					tirPossible = true;
 				}
+			}
+		} else {
+			if (coordHitedShip.size() > 0) { // Si l'IA a déjà touché une coordonnée
+				Coordonnee last = coordHitedShip.get(coordHitedShip.size() - 1);
+				Coordonnee tmp = new Coordonnee();
+				boolean truc = false;
+				System.out.println("LastHited: " + last.getCoordonnee());
+				
+				for (Coordonnee co : coordHitedShip) {
+					c = co.getNextCoordUp();
+					//System.out.println(co.getCoordonnee() + "  :" + c.getCoordonnee());
+					if (monPlayer.isShooted(c.getCoordonnee()) || !c.coordCorrect(c.getCoordonnee())) {
+					//	System.out.println("UP hit");
+						c = co.getNextCoordDown();
+						//System.out.println(co.getCoordonnee() + "  :" + c.getCoordonnee());
+						if (monPlayer.isShooted(c.getCoordonnee()) || !c.coordCorrect(c.getCoordonnee())) {
+							//	System.out.println("Down hit");
+							c = co.getNextCoordLeft();
+							//System.out.println(co.getCoordonnee() + "  :" + c.getCoordonnee());
+							if (monPlayer.isShooted(c.getCoordonnee()) || !c.coordCorrect(c.getCoordonnee())) {
+								//	System.out.println("left hit");
+								c = co.getNextCoordRight();
+								//System.out.println(co.getCoordonnee() + "  :" + c.getCoordonnee());
+								if (monPlayer.isShooted(c.getCoordonnee()) || !c.coordCorrect(c.getCoordonnee())) {
+									//	System.out.println("Right hit");	
+									
+								} else {
+									truc = true;
+									break;
+								}
+							} else {
+								truc = true;
+								break;
+							}
+						} else {
+							truc = true;
+							break;
+						}
+					} else {
+						truc = true;
+						break;
+					}
+					
+				}
+				
+				if(!truc) {
+					c = Coordonnee.huntMode(monPlayer);
+				}
+				
 
-				System.out.println("Je peux tirer ===============================  normal");
-
+			} else {//Sinon on passe en mode Chasse
+				c = Coordonnee.huntMode(monPlayer); 
 			}
 
 		}
+
 		System.out.println("Tir: " + c.getCoordonnee());
 
 		/************ Partie 2 *************/
@@ -90,6 +116,7 @@ public class IAhard extends Player implements IA {
 				touche = true;
 				c.setHit();
 				monPlayer.getMyCoords().add(c);
+				coordHitedShip.add(c);
 				if (s1.isDestroyed()) {
 					shipDelete = s1;
 					destroyed = true;
@@ -111,13 +138,6 @@ public class IAhard extends Player implements IA {
 			monPlayer.setScore(score);
 		}
 
-		// Analyse du dernier tir
-		// Si touché, comparer avec les bateaux restants pour voir où tirer
-		// prendre en compte la taille et l'orientation
-
-		// Si non touché, faire un pseudo random en regardant les bateaux restants
-
-		lastShoot = c;
 	}
 
 	public void createDestroyer() { // size 2
@@ -143,15 +163,15 @@ public class IAhard extends Player implements IA {
 
 			Ship s = new Ship(start.getCoordonnee(), tabCoords.get(valEnd).getCoordonnee());
 
-			System.out.println("Ship Size: " + s.getSize());
-			for (Coordonnee c : s.getTabCoord()) {
-				System.out.println(c.getCoordonnee());
-			}
+			
 			boolean chevauchement = this.verificationChevauchement(s);
 			if (!chevauchement) {
 				this.getFlotte().add(s); // Ajout du Bateau à la flotte
 				ajoute = true; // On a ajouté le Bateau
-
+				System.out.println("Ship Size: " + s.getSize());
+				for (Coordonnee c : s.getTabCoord()) {
+					System.out.println(c.getCoordonnee());
+				}
 			}
 
 		}
@@ -180,15 +200,15 @@ public class IAhard extends Player implements IA {
 
 			Ship s = new Ship(start.getCoordonnee(), tabCoords.get(valEnd).getCoordonnee());
 
-			System.out.println("Ship Size: " + s.getSize());
-			for (Coordonnee c : s.getTabCoord()) {
-				System.out.println(c.getCoordonnee());
-			}
+			
 			boolean chevauchement = this.verificationChevauchement(s);
 			if (!chevauchement) {
 				this.getFlotte().add(s); // Ajout du Bateau à la flotte
 				ajoute = true; // On a ajouté le Bateau
-
+				System.out.println("Ship Size: " + s.getSize());
+				for (Coordonnee c : s.getTabCoord()) {
+					System.out.println(c.getCoordonnee());
+				}
 			}
 
 		}
@@ -216,15 +236,15 @@ public class IAhard extends Player implements IA {
 
 			Ship s = new Ship(start.getCoordonnee(), tabCoords.get(valEnd).getCoordonnee());
 
-			System.out.println("Ship Size: " + s.getSize());
-			for (Coordonnee c : s.getTabCoord()) {
-				System.out.println(c.getCoordonnee());
-			}
+			
 			boolean chevauchement = this.verificationChevauchement(s);
 			if (!chevauchement) {
 				this.getFlotte().add(s); // Ajout du Bateau à la flotte
 				ajoute = true; // On a ajouté le Bateau
-
+				System.out.println("Ship Size: " + s.getSize());
+				for (Coordonnee c : s.getTabCoord()) {
+					System.out.println(c.getCoordonnee());
+				}
 			}
 
 		}
@@ -252,15 +272,15 @@ public class IAhard extends Player implements IA {
 
 			Ship s = new Ship(start.getCoordonnee(), tabCoords.get(valEnd).getCoordonnee());
 
-			System.out.println("Ship Size: " + s.getSize());
-			for (Coordonnee c : s.getTabCoord()) {
-				System.out.println(c.getCoordonnee());
-			}
+			
 			boolean chevauchement = this.verificationChevauchement(s);
 			if (!chevauchement) {
 				this.getFlotte().add(s); // Ajout du Bateau à la flotte
 				ajoute = true; // On a ajouté le Bateau
-
+				System.out.println("Ship Size: " + s.getSize());
+				for (Coordonnee c : s.getTabCoord()) {
+					System.out.println(c.getCoordonnee());
+				}
 			}
 
 		}
@@ -288,29 +308,18 @@ public class IAhard extends Player implements IA {
 
 			Ship s = new Ship(start.getCoordonnee(), tabCoords.get(valEnd).getCoordonnee());
 
-			System.out.println("Ship Size: " + s.getSize());
-			for (Coordonnee c : s.getTabCoord()) {
-				System.out.println(c.getCoordonnee());
-			}
+			
 			boolean chevauchement = this.verificationChevauchement(s);
 			if (!chevauchement) {
 				this.getFlotte().add(s); // Ajout du Bateau à la flotte du Robot
 				ajoute = true; // On a ajouté le Bateau
-
+				System.out.println("Ship Size: " + s.getSize());
+				for (Coordonnee c : s.getTabCoord()) {
+					System.out.println(c.getCoordonnee());
+				}
 			}
 
 		}
-	}
-
-	public static boolean isContained(Coordonnee c, Player p) {
-		boolean equal = false;
-
-		for (Coordonnee coord : p.getMyCoords()) {
-			if (coord.getCoordonnee().equals(c.getCoordonnee())) {
-				equal = true;
-			}
-		}
-		return equal;
 	}
 
 }

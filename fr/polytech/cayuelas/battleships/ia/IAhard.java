@@ -37,7 +37,7 @@ public class IAhard extends Player implements IA {
 		Coordonnee c = new Coordonnee();
 
 		// System.out.println("Je vais tirer");
-		if(monPlayer.getMyCoords().size() == 0) {
+		if(monPlayer.getmyCoordsShooted().size() == 0) {
 		
 			boolean tirPossible = false;
 
@@ -49,12 +49,13 @@ public class IAhard extends Player implements IA {
 			}
 		} else {
 			if (coordHitedShip.size() > 0) { // Si l'IA a déjà touché une coordonnée
-				Coordonnee last = coordHitedShip.get(coordHitedShip.size() - 1);
-				Coordonnee tmp = new Coordonnee();
-				boolean truc = false;
-				System.out.println("LastHited: " + last.getCoordonnee());
 				
-				for (Coordonnee co : coordHitedShip) {
+				Coordonnee last = coordHitedShip.get(coordHitedShip.size() - 1);
+				boolean available = false;
+				System.out.println("LastHited: " + last.getCoordonnee()); //Dernière coordonnée touchée (hit == 1)
+				int i = 0;
+				while(!available && i < coordHitedShip.size()) {
+				Coordonnee co = coordHitedShip.get(i);
 					c = co.getNextCoordUp();
 					//System.out.println(co.getCoordonnee() + "  :" + c.getCoordonnee());
 					if (monPlayer.isShooted(c.getCoordonnee()) || !c.coordCorrect(c.getCoordonnee())) {
@@ -70,37 +71,30 @@ public class IAhard extends Player implements IA {
 								c = co.getNextCoordRight();
 								//System.out.println(co.getCoordonnee() + "  :" + c.getCoordonnee());
 								if (monPlayer.isShooted(c.getCoordonnee()) || !c.coordCorrect(c.getCoordonnee())) {
-									//	System.out.println("Right hit");	
-									
+									//	System.out.println("Right hit");
 								} else {
-									truc = true;
-									break;
+									available = true;
 								}
 							} else {
-								truc = true;
-								break;
+								available = true;
 							}
 						} else {
-							truc = true;
-							break;
+							available = true;
 						}
 					} else {
-						truc = true;
-						break;
+						available = true;
 					}
-					
-				}
+					i++;
+				} //END While
 				
-				if(!truc) {
+				if(!available) {
 					c = Coordonnee.huntMode(monPlayer);
 				}
-				
 
 			} else {//Sinon on passe en mode Chasse
 				c = Coordonnee.huntMode(monPlayer); 
-			}
-
-		}
+			}//End IF
+		}//END IF
 
 		System.out.println("Tir: " + c.getCoordonnee());
 
@@ -115,7 +109,7 @@ public class IAhard extends Player implements IA {
 			if (s1.isHit(c.getCoordonnee())) {
 				touche = true;
 				c.setHit();
-				monPlayer.getMyCoords().add(c);
+				monPlayer.getmyCoordsShooted().add(c);
 				coordHitedShip.add(c);
 				if (s1.isDestroyed()) {
 					shipDelete = s1;
@@ -126,7 +120,7 @@ public class IAhard extends Player implements IA {
 		if (touche) {
 			System.out.println("Touché");
 		} else {
-			monPlayer.getMyCoords().add(c);
+			monPlayer.getmyCoordsShooted().add(c);
 			System.out.println("Raté");
 		}
 

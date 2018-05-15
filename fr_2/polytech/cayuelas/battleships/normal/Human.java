@@ -1,4 +1,4 @@
-package ig.polytech.cayuelas.battleships.normal;
+package fr.polytech.cayuelas.battleships.normal;
 
 
 public class Human extends Player {

@@ -1,7 +1,7 @@
-package ig.polytech.cayuelas.battleships.ia;
-import ig.polytech.cayuelas.battleships.normal.Player;
-import ig.polytech.cayuelas.battleships.normal.Coordonnee;
-import ig.polytech.cayuelas.battleships.normal.Ship;
+package fr.polytech.cayuelas.battleships.ia;
+import fr.polytech.cayuelas.battleships.normal.Player;
+import fr.polytech.cayuelas.battleships.normal.Coordonnee;
+import fr.polytech.cayuelas.battleships.normal.Ship;
 
 import java.util.ArrayList;
 import java.util.Random;
@@ -41,19 +41,21 @@ public class IAbeginner extends Player implements IA {
 
 				Ship s = new Ship(start.getCoordonnee(), tabCoords.get(valEnd).getCoordonnee());
 				
-				System.out.println("Ship Size: " + s.getSize());
-				for (Coordonnee c : s.getTabCoord()) {
-					System.out.println(c.getCoordonnee());
-				}
+				
 				boolean chevauchement = this.verificationChevauchement(s);
 				if (!chevauchement) {
 					this.getFlotte().add(s); // Ajout du Bateau à la flotte du Robot
 					ajoute = true; // On a ajouté le Bateau
 					i++;
 					nb++;
+					System.out.println("Ship Size: " + s.getSize());
+					for (Coordonnee c : s.getTabCoord()) {
+						System.out.println(c.getCoordonnee());
+					}
 				}
 
 			}
+			
 		}
 
 

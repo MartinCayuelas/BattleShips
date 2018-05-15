@@ -1,9 +1,7 @@
-package ig.polytech.cayuelas.battleships.ia;
+package fr.polytech.cayuelas.battleships.tests;
 
-import ig.polytech.cayuelas.battleships.normal.Player;
-
-import ig.polytech.cayuelas.battleships.normal.Coordonnee;
-import ig.polytech.cayuelas.battleships.normal.Ship;
+import fr.polytech.cayuelas.battleships.ia.IAbeginner;
+import fr.polytech.cayuelas.battleships.ia.IAmedium;
 
 public class testBeginnerVsMedium {
 
@@ -25,13 +23,18 @@ public class testBeginnerVsMedium {
 			medium.createFleet();
 			System.out.println(medium.getFlotte());
 
-			System.out.println("Mycoords Med: " + medium.getMyCoords().size());
-
+			boolean end = false;
 			while ((beginner.getFlotte().size() != 0) && (medium.getFlotte().size() != 0)) {
-
+				System.out.println("Beginner_-----------------------------");
 				beginner.shoot(beginner, medium);
+				
+				if ((medium.getFlotte().size() == 0)) {
+					end = true;
+				}
+				if(!end) {
+				System.out.println("Medium_-----------------------------");
 				medium.shoot(medium, beginner);
-
+				}
 			}
 			if ((beginner.getFlotte().size() == 0)) {
 				scoreM += 1;

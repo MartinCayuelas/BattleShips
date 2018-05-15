@@ -82,9 +82,9 @@ public class MainPlayer {
 							System.out.println(p.afficheFlotteDetails());
 							/**** Partie Affichage "Grille" du Joueur ******/
 							for (int z = 0; z < s.getSize(); z++) {
-								p.getMyCoords().add(s.getTabCoord()[z]);
+								p.getmyCoordsShooted().add(s.getTabCoord()[z]);
 							}
-							System.out.println(p.myCoordString());
+							System.out.println(p.myCoordsShootedString());
 							/**************************************************/
 						} else {
 							if (chevauchement) {
@@ -112,8 +112,8 @@ public class MainPlayer {
 		System.out.println(" 〰️ -> Eau (possiblement)");
 		System.out.println(" ⛴ -> Touché");
 		System.out.println(" X -> Raté");
-		player1.getMyCoords().clear();
-		player2.getMyCoords().clear();
+		player1.getmyCoordsShooted().clear();
+		player2.getmyCoordsShooted().clear();
 		boolean tour = true;
 		Human monPlayer;
 		Human monAdversaire;
@@ -130,7 +130,7 @@ public class MainPlayer {
 			// Tour du Joueur 1
 			System.out.println("Player  : " + monPlayer.getName());
 			System.out.println("Grille : -------------------------------");
-			System.out.println(monPlayer.myCoordString());
+			System.out.println(monPlayer.myCoordsShootedString());
 			boolean tirOk = false;
 			String tir1 = "";
 			Coordonnee c = null;
@@ -153,7 +153,7 @@ public class MainPlayer {
 				if (s1.isHit(c.getCoordonnee())) {
 					touche = true;
 					c.setHit();
-					monPlayer.getMyCoords().add(c);
+					monPlayer.getmyCoordsShooted().add(c);
 					if (s1.isDestroyed()) {
 						shipDelete = s1;
 						destroyed = true;
@@ -163,7 +163,7 @@ public class MainPlayer {
 			if (touche) {
 				System.out.println("Touché");
 			} else {
-				monPlayer.getMyCoords().add(c);
+				monPlayer.getmyCoordsShooted().add(c);
 				System.out.println("Raté");
 			}
 

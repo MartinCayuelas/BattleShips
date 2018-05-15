@@ -76,7 +76,7 @@ public class IAbeginner extends Player implements IA {
 			if (s1.isHit(c.getCoordonnee())) {
 				touche = true;
 				c.setHit();
-				monPlayer.getMyCoords().add(c);
+				monPlayer.getmyCoordsShooted().add(c);
 				if (s1.isDestroyed()) {
 					shipDelete = s1;
 					destroyed = true;
@@ -86,7 +86,7 @@ public class IAbeginner extends Player implements IA {
 		if (touche) {
 			System.out.println("Touché");
 		} else {
-			monPlayer.getMyCoords().add(c);
+			monPlayer.getmyCoordsShooted().add(c);
 			System.out.println("Raté");
 		}
 

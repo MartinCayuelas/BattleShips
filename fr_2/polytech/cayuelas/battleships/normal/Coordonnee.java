@@ -1,4 +1,4 @@
-package ig.polytech.cayuelas.battleships.normal;
+package fr.polytech.cayuelas.battleships.normal;
 
 import java.util.ArrayList;
 import java.util.Random;
@@ -9,8 +9,10 @@ public class Coordonnee {
 	private int partTwo;
 	private int hit;
 
-	public Coordonnee() {};
-	public Coordonnee(String coord){
+	public Coordonnee() {
+	};
+
+	public Coordonnee(String coord) {
 
 		if (coord.length() == 3) {
 			coord = coord.substring(0, 1).toUpperCase() + coord.substring(1, 2) + coord.substring(2, 3);
@@ -117,9 +119,7 @@ public class Coordonnee {
 		}
 		return superieur;
 	}
-	
-	
-	
+
 	/***************** Pour le robot **************/
 
 	public ArrayList<Coordonnee> getPossibilities(int sizeBoat) {
@@ -193,6 +193,92 @@ public class Coordonnee {
 		return start;
 	}
 
+	public boolean isPair() {// Retourne vrai si la coordonnéé est paire
+		// B2 est pair, B3 non, A1 est impair, A2 est impair
+		boolean pair = false;
+
+		char c = this.getPartOne();
+		int i = this.getPartTwo();
+		int valC = Character.getNumericValue(c);
+		int v = (valC + i) % 2;
+		if (v == 0) {
+			pair = true;
+
+		}
+		return pair;
+	}
+	
+	public static Coordonnee huntMode(Player p) {
+		Coordonnee c = new Coordonnee();
+		boolean tirPossible = false;
+
+		while (!tirPossible) {
+			c = Coordonnee.coordRandom();
+			if (c.isPair()) {
+				if (p.isShooted(c.getCoordonnee())) {
+					tirPossible = false;
+				}else {
+					tirPossible = true;
+				}
+			}
+		}
+		return c;
+	}
+
 	
 	
+	public Coordonnee getNextCoordUp() {
+		Coordonnee newC;
+		char c = this.getPartOne();
+		int i = this.getPartTwo() - 1;
+		
+		String str = c +""+i;
+		newC = new Coordonnee(str);
+		
+		
+		return  newC;
+	}
+
+	public Coordonnee getNextCoordDown() {
+		Coordonnee newC;
+		char c = this.getPartOne();
+		int i = this.getPartTwo() + 1;
+		
+		String str = c +""+i;
+		newC = new Coordonnee(str);
+		
+		
+		return  newC;
+	}
+
+	public Coordonnee getNextCoordLeft() {
+		Coordonnee newC;
+		char c = this.getPartOne();
+		c --;
+		int i = this.getPartTwo();
+		
+		String str = c +""+i;
+		newC = new Coordonnee(str);
+		
+		
+		return  newC;
+	}
+
+	public Coordonnee getNextCoordRight() {
+		Coordonnee newC;
+		char c = this.getPartOne();
+		c++;
+		int i = this.getPartTwo();
+		
+		String str = c +""+i;
+		newC = new Coordonnee(str);
+		
+		
+		return  newC;
+	}
+
+	public boolean equals(String c) {
+		return this.getCoordonnee().equals(c);
+	}
+
 }
