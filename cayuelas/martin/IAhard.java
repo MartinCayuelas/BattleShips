@@ -1,18 +1,24 @@
-package fr.polytech.cayuelas.battleships.ia;
+package cayuelas.martin;
 
-import fr.polytech.cayuelas.battleships.normal.Player;
-import fr.polytech.cayuelas.battleships.normal.Coordonnee;
-import fr.polytech.cayuelas.battleships.normal.Ship;
+
 
 import java.util.ArrayList;
 import java.util.Random;
 
-public class IAhard extends Player implements IA {
+public class IAhard implements IA {
+	private String name;
+	private int score;
+	private ArrayList<Ship> Flotte;
+	private ArrayList<Coordonnee> myCoordsShooted;
 
-	private ArrayList<Coordonnee> coordHitedShip; //Liste de coordonnée touchée (Hit == 1 )
+	private ArrayList<Coordonnee> coordHitedShip; // Liste de coordonnée touchée (Hit == 1 )
 
 	public IAhard(String nom) {
-		super(nom);
+		name = nom;
+		score = 0;
+		Flotte = new ArrayList<Ship>();
+		myCoordsShooted = new ArrayList<Coordonnee>();
+
 		coordHitedShip = new ArrayList<Coordonnee>();
 		// TODO Auto-generated constructor stub
 	}
@@ -32,13 +38,14 @@ public class IAhard extends Player implements IA {
 
 	}
 
+	
 	@Override
 	public void shoot(Player monPlayer, Player monAdversaire) {
 		Coordonnee c = new Coordonnee();
 
 		// System.out.println("Je vais tirer");
-		if(monPlayer.getMyCoords().size() == 0) {
-		
+		if (monPlayer.getmyCoordsShooted().size() == 0) {
+
 			boolean tirPossible = false;
 
 			while (!tirPossible) {
@@ -49,58 +56,55 @@ public class IAhard extends Player implements IA {
 			}
 		} else {
 			if (coordHitedShip.size() > 0) { // Si l'IA a déjà touché une coordonnée
+
 				Coordonnee last = coordHitedShip.get(coordHitedShip.size() - 1);
-				Coordonnee tmp = new Coordonnee();
-				boolean truc = false;
-				System.out.println("LastHited: " + last.getCoordonnee());
-				
-				for (Coordonnee co : coordHitedShip) {
+				boolean available = false;
+				System.out.println("LastHited: " + last.getCoordonnee()); // Dernière coordonnée touchée (hit == 1)
+				int i = 0;
+				while (!available && i < coordHitedShip.size()) {
+					Coordonnee co = coordHitedShip.get(i);
 					c = co.getNextCoordUp();
-					//System.out.println(co.getCoordonnee() + "  :" + c.getCoordonnee());
+					// System.out.println(co.getCoordonnee() + " :" + c.getCoordonnee());
 					if (monPlayer.isShooted(c.getCoordonnee()) || !c.coordCorrect(c.getCoordonnee())) {
-					//	System.out.println("UP hit");
+						// System.out.println("UP hit");
 						c = co.getNextCoordDown();
-						//System.out.println(co.getCoordonnee() + "  :" + c.getCoordonnee());
+						// System.out.println(co.getCoordonnee() + " :" + c.getCoordonnee());
 						if (monPlayer.isShooted(c.getCoordonnee()) || !c.coordCorrect(c.getCoordonnee())) {
-							//	System.out.println("Down hit");
+							// System.out.println("Down hit");
 							c = co.getNextCoordLeft();
-							//System.out.println(co.getCoordonnee() + "  :" + c.getCoordonnee());
+							// System.out.println(co.getCoordonnee() + " :" + c.getCoordonnee());
 							if (monPlayer.isShooted(c.getCoordonnee()) || !c.coordCorrect(c.getCoordonnee())) {
-								//	System.out.println("left hit");
+								// System.out.println("left hit");
 								c = co.getNextCoordRight();
-								//System.out.println(co.getCoordonnee() + "  :" + c.getCoordonnee());
+								// System.out.println(co.getCoordonnee() + " :" + c.getCoordonnee());
 								if (monPlayer.isShooted(c.getCoordonnee()) || !c.coordCorrect(c.getCoordonnee())) {
-									//	System.out.println("Right hit");	
-									
+									// System.out.println("Right hit");
 								} else {
-									truc = true;
-									break;
+									available = true;
 								}
 							} else {
-								truc = true;
-								break;
+								available = true;
 							}
 						} else {
-							truc = true;
-							break;
+							available = true;
 						}
 					} else {
-						truc = true;
-						break;
+						available = true;
 					}
+					i++;
+				} // END While
+				
+				
+				if (!available) {
 					
-				}
-				
-				if(!truc) {
 					c = Coordonnee.huntMode(monPlayer);
-				}
 				
+				}
 
-			} else {//Sinon on passe en mode Chasse
-				c = Coordonnee.huntMode(monPlayer); 
-			}
-
-		}
+			} else {// Sinon on passe en mode Chasse
+				c = Coordonnee.huntMode(monPlayer);
+			} // End IF
+		} // END IF
 
 		System.out.println("Tir: " + c.getCoordonnee());
 
@@ -115,7 +119,7 @@ public class IAhard extends Player implements IA {
 			if (s1.isHit(c.getCoordonnee())) {
 				touche = true;
 				c.setHit();
-				monPlayer.getMyCoords().add(c);
+				monPlayer.getmyCoordsShooted().add(c);
 				coordHitedShip.add(c);
 				if (s1.isDestroyed()) {
 					shipDelete = s1;
@@ -126,7 +130,7 @@ public class IAhard extends Player implements IA {
 		if (touche) {
 			System.out.println("Touché");
 		} else {
-			monPlayer.getMyCoords().add(c);
+			monPlayer.getmyCoordsShooted().add(c);
 			System.out.println("Raté");
 		}
 
@@ -163,7 +167,6 @@ public class IAhard extends Player implements IA {
 
 			Ship s = new Ship(start.getCoordonnee(), tabCoords.get(valEnd).getCoordonnee());
 
-			
 			boolean chevauchement = this.verificationChevauchement(s);
 			if (!chevauchement) {
 				this.getFlotte().add(s); // Ajout du Bateau à la flotte
@@ -200,7 +203,6 @@ public class IAhard extends Player implements IA {
 
 			Ship s = new Ship(start.getCoordonnee(), tabCoords.get(valEnd).getCoordonnee());
 
-			
 			boolean chevauchement = this.verificationChevauchement(s);
 			if (!chevauchement) {
 				this.getFlotte().add(s); // Ajout du Bateau à la flotte
@@ -236,7 +238,6 @@ public class IAhard extends Player implements IA {
 
 			Ship s = new Ship(start.getCoordonnee(), tabCoords.get(valEnd).getCoordonnee());
 
-			
 			boolean chevauchement = this.verificationChevauchement(s);
 			if (!chevauchement) {
 				this.getFlotte().add(s); // Ajout du Bateau à la flotte
@@ -272,7 +273,6 @@ public class IAhard extends Player implements IA {
 
 			Ship s = new Ship(start.getCoordonnee(), tabCoords.get(valEnd).getCoordonnee());
 
-			
 			boolean chevauchement = this.verificationChevauchement(s);
 			if (!chevauchement) {
 				this.getFlotte().add(s); // Ajout du Bateau à la flotte
@@ -308,7 +308,6 @@ public class IAhard extends Player implements IA {
 
 			Ship s = new Ship(start.getCoordonnee(), tabCoords.get(valEnd).getCoordonnee());
 
-			
 			boolean chevauchement = this.verificationChevauchement(s);
 			if (!chevauchement) {
 				this.getFlotte().add(s); // Ajout du Bateau à la flotte du Robot
@@ -320,6 +319,229 @@ public class IAhard extends Player implements IA {
 			}
 
 		}
+	}
+
+	public String getName() {
+		return name;
+	}
+
+	public void setName(String name) {
+		this.name = name;
+	}
+
+	public int getScore() {
+		return score;
+	}
+
+	public void setScore(int score) {
+		this.score = score;
+	}
+
+	public ArrayList<Ship> getFlotte() {
+		return Flotte;
+	}
+
+	public ArrayList<Coordonnee> getmyCoordsShooted() {
+		return myCoordsShooted;
+	}
+
+	@Override
+	public String afficheFlotteDetails() {
+		// TODO Auto-generated method stub
+		String str = "Carriers (Taille 5): " + this.getNbCarrier() + "\n";
+		str += "Cruisers (Taille 3): " + this.getNbCruiser() + "\n";
+		str += "Battleships (Taille 4): " + this.getNbBattleship() + "\n";
+		str += "Destroyers (Taille 2): " + this.getNbDestroyer() + "\n";
+		str += "Submarines (Taille 3): " + this.getNbSubmarine() + "\n";
+
+		return str;
+	}
+
+	@Override
+	public void incrementeTypeBateau(int size) {
+		// TODO Auto-generated method stub
+
+	}
+
+	@Override
+	public boolean verificationAjout(int size) {
+		// TODO Auto-generated method stub
+		return false;
+	}
+
+	@Override
+	public boolean verificationChevauchement(Ship shipTraite) {
+		// TODO Auto-generated method stub
+		boolean coordEgale = false;
+
+		for (Ship s : this.Flotte) {
+			int i = 0;
+			while (!coordEgale && i < s.getSize()) {
+				int j = 0;
+				while (j < shipTraite.getSize() && !coordEgale) {
+					if (s.getTabCoord()[i].getCoordonnee().equals(shipTraite.getTabCoord()[j].getCoordonnee())) {
+						coordEgale = true;
+					}
+					j++;
+				}
+				i++;
+			}
+		}
+		return coordEgale;
+	}
+
+	@Override
+	public String toString() {
+		String st = "[";
+		st += this.getName() + ": ";
+		for (Ship s : this.Flotte) {
+			st += s.getSize()+", ";
+		}
+		st+="]";
+		return st;
+	}
+
+	@Override
+	public boolean isShooted(String shoot) {
+		boolean inList = false;
+		int i = 0;
+		for (Coordonnee coord : myCoordsShooted) {
+			if (coord.equals(shoot)) {
+				inList = true;
+			}
+		}
+		return inList;
+	}
+
+	@Override
+	public String myCoordsShootedString() {
+		String str = "";
+		String lettres = "	";
+		String letter = "A";
+		char l = letter.charAt(0);
+		int cpt = 0;
+		while (cpt < 10) {
+			lettres += "" + l + "\t";
+			l++; // On change la lettre
+			cpt++;
+		}
+
+		str += lettres + "\n";
+		letter = "A";
+		l = letter.charAt(0);
+
+		int u = 0;
+		int w;
+		while (u < 10) {
+			w = 0;
+			str += (u + 1) + "	";
+			int nb = u + 1;
+			while (w < 10) {
+
+				String maCoord = l + "" + nb;
+				boolean equal = false;
+				boolean touche = false;
+				Coordonnee c = new Coordonnee(maCoord);
+				for (Coordonnee coord : this.getmyCoordsShooted()) {
+					// System.out.println("c:"+coord.getCoordonnee()+" hit: "+coord.getHit());
+					if (coord.getCoordonnee().equals(c.getCoordonnee())) {
+						equal = true;
+						if (coord.getHit() == 1) {
+							touche = true;
+
+						}
+					}
+				}
+				if (equal) {
+					if (touche) {
+						str += "" + "⛴" + "\t";
+					} else {
+						str += "" + "X" + "\t";
+					}
+				} else {
+					str += "" + "〰️" + "\t";
+				}
+
+				w++;
+				l++;
+			}
+			str += "\n";
+			letter = "A";
+			l = letter.charAt(0);
+			u++;
+		}
+		return str;
+	}
+
+	
+
+	@Override
+	public void resetPlayer() {
+		// TODO Auto-generated method stub
+		this.getmyCoordsShooted().clear(); //On nettoie les tirs
+		this.getFlotte().clear(); // On nettoie la flotte
+		this.coordHitedShip.clear();
+		this.score= 0;
+	}
+
+	@Override
+	public int getNbCarrier() {
+		// TODO Auto-generated method stub
+		return 0;
+	}
+
+	@Override
+	public void setNbCarrier() {
+		// TODO Auto-generated method stub
+
+	}
+
+	@Override
+	public int getNbCruiser() {
+		// TODO Auto-generated method stub
+		return 0;
+	}
+
+	@Override
+	public void setNbCruiser() {
+		// TODO Auto-generated method stub
+
+	}
+
+	@Override
+	public int getNbBattleship() {
+		// TODO Auto-generated method stub
+		return 0;
+	}
+
+	@Override
+	public void setNbBattleship() {
+		// TODO Auto-generated method stub
+
+	}
+
+	@Override
+	public int getNbSubmarine() {
+		// TODO Auto-generated method stub
+		return 0;
+	}
+
+	@Override
+	public void setNbSubmarine() {
+		// TODO Auto-generated method stub
+
+	}
+
+	@Override
+	public int getNbDestroyer() {
+		// TODO Auto-generated method stub
+		return 0;
+	}
+
+	@Override
+	public void setNbDestroyer() {
+		// TODO Auto-generated method stub
+
 	}
 
 }

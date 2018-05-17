@@ -1,11 +1,8 @@
-package fr.polytech.cayuelas.battleships.main;
+package cayuelas.martin;
 
 import java.util.Scanner;
 
-import fr.polytech.cayuelas.battleships.ia.IAbeginner;
-import fr.polytech.cayuelas.battleships.ia.IAmedium;
-import fr.polytech.cayuelas.battleships.normal.Player;
-import fr.polytech.cayuelas.battleships.ia.IAhard;
+
 
 public class MainIAvsIA {
 
@@ -19,7 +16,7 @@ public class MainIAvsIA {
 		int choix = scAi.nextInt();
 		/**************** Init IA ***********/
 		 
-		Player ia = new Player();
+		IA ia ;
 		if(choix == 1){
 			ia = new IAbeginner("Frodon");
 			System.out.println("Je suis beginner");
@@ -39,16 +36,16 @@ public class MainIAvsIA {
 		Scanner scAi2 = new Scanner(System.in);
 		int choix2 = scAi2.nextInt();
 			 
-		Player ia2 = new Player();
+		IA ia2;
 		if(choix2 == 1){
 			ia2 = new IAbeginner("Frodon");
-			System.out.println("Je suis beginner");
+			System.out.println("Je suis une IA Beginner");
 		}else if(choix2 == 2){
 			ia2 = new IAmedium("Aragorn");
-			System.out.println("Je suis medium");
+			System.out.println("Je suis une IA Medium");
 		}else {
 			ia2 = new IAhard("Gandalf");
-			System.out.println("Je suis hard");
+			System.out.println("Je suis une IA Hard");
 		}
 		
 		ia2.createFleet();
@@ -60,16 +57,16 @@ public class MainIAvsIA {
 		System.out.println(" ⛴ -> Touché");
 		System.out.println(" X -> Raté");
 		
-		System.out.println("avant: "+ia.getMyCoords().size());
-		ia2.getMyCoords().clear();
-		ia.getMyCoords().clear();
-		System.out.println("Apres: "+ia.getMyCoords().size());
+		System.out.println("avant: "+ia.getmyCoordsShooted().size());
+		ia2.getmyCoordsShooted().clear();
+		ia.getmyCoordsShooted().clear();
+		System.out.println("Apres: "+ia.getmyCoordsShooted().size());
 		boolean end = false;
 		int cpt = 0;
 		while ((ia.getFlotte().size() != 0) && (ia2.getFlotte().size() != 0)) {
 			System.out.println("Player  : " + ia.getName());
 			System.out.println("Grille : -------------------------------");
-			System.out.println(ia.myCoordString());
+			System.out.println(ia.myCoordsShootedString());
 			ia.shoot(ia, ia2);
 
 			if ((ia2.getFlotte().size() == 0)) {
@@ -78,7 +75,7 @@ public class MainIAvsIA {
 			if(!end) {
 			System.out.println("Player  : " + ia2.getName());
 			System.out.println("Grille : -------------------------------");
-			System.out.println(ia2.myCoordString());
+			System.out.println(ia2.myCoordsShootedString());
 			ia2.shoot(ia2, ia);
 			cpt++;
 			}
@@ -93,8 +90,6 @@ public class MainIAvsIA {
 		
 		System.out.println("Score de IA 1 " + ia.getName() + " : " + ia.getScore()); // IA 1
 		System.out.println("Score de IA 2 " + ia2.getName() + " : " + ia2.getScore());
-		
-		
 		
 		System.out.println("NB tour : " + cpt);
 	}

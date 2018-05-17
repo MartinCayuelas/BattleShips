@@ -1,4 +1,4 @@
-package fr.polytech.cayuelas.battleships.normal;
+package cayuelas.martin;
 
 import java.util.ArrayList;
 import java.util.Random;

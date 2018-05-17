@@ -1,14 +1,15 @@
-package fr.polytech.cayuelas.battleships.normal;
+package cayuelas.martin;
 
 import java.util.ArrayList;
-import java.util.Scanner;
 
-public class Player {
+public class Human implements Player {
 
+	
+	
 	private String name;
 	private int score;
 	private ArrayList<Ship> Flotte;
-	private ArrayList<Coordonnee> myCoords;
+	private ArrayList<Coordonnee> myCoordsShooted;
 
 	private int nbCarrier;
 	private int nbCruiser;
@@ -16,12 +17,12 @@ public class Player {
 	private int nbSubmarine;
 	private int nbDestroyer;
 
-	public Player() {}
-	public Player(String nom) {
+	
+	public Human(String nom) {
 		name = nom;
 		score = 0;
 		Flotte = new ArrayList<Ship>();
-		myCoords = new ArrayList<Coordonnee>();
+		myCoordsShooted = new ArrayList<Coordonnee>();
 		nbCarrier = 0;
 		nbCruiser = 0;
 		nbBattleship = 0;
@@ -50,8 +51,8 @@ public class Player {
 		return Flotte;
 	}
 
-	public ArrayList<Coordonnee> getMyCoords() {
-		return myCoords;
+	public ArrayList<Coordonnee> getmyCoordsShooted() {
+		return myCoordsShooted;
 	}
 
 	/***************
@@ -131,21 +132,21 @@ public class Player {
 		return coordEgale;
 	}
 
-	public String mYcoordsString() {
+	/*public String myCoordsShootedString() {
 		String str ="[";
 		int i = 0;
-		while(i < this.myCoords.size()) {
-			str+=this.myCoords.get(i).getCoordonnee()+" ";
+		while(i < this.myCoordsShooted.size()) {
+			str+=this.myCoordsShooted.get(i).getCoordonnee()+" ";
 		}
 		return str;
-	}
+	}*/
 
 	@Override
 	public String toString() {
 		String st = "";
 		st += this.getName() + ": \n";
 		for (Ship s : this.Flotte) {
-			st += s;
+			st += s.getSize();
 		}
 		return st;
 	}
@@ -153,7 +154,7 @@ public class Player {
 	public boolean isShooted(String shoot) {
 		boolean inList = false;
 		int i = 0;
-		for(Coordonnee coord : myCoords) {
+		for(Coordonnee coord : myCoordsShooted) {
 			if(coord.equals(shoot)) {
 				inList=true;
 			}
@@ -163,7 +164,7 @@ public class Player {
 	
 	
 	
-	public String myCoordString() {
+	public String myCoordsShootedString() {
 		String str = "";
 		String lettres = "	";
 		String letter = "A";
@@ -191,7 +192,7 @@ public class Player {
 				boolean equal = false;
 				boolean touche = false;
 				Coordonnee c = new Coordonnee(maCoord);
-				for (Coordonnee coord : this.getMyCoords()) {
+				for (Coordonnee coord : this.getmyCoordsShooted()) {
 					// System.out.println("c:"+coord.getCoordonnee()+" hit: "+coord.getHit());
 					if (coord.getCoordonnee().equals(c.getCoordonnee())) {
 						equal = true;
@@ -222,10 +223,20 @@ public class Player {
 		return str;
 	}
 
-	public void createFleet() {
-		
+	
+	
+	
+	
+	public void resetPlayer() {
+		this.getmyCoordsShooted().clear(); //On nettoie les tirs
+		this.getFlotte().clear(); // On nettoie la flotte
+		this.nbCarrier = 0;
+		this.nbCruiser = 0;
+		this.nbBattleship =0;
+		this.nbSubmarine = 0;
+		this.nbDestroyer=0;
+		this.score= 0;
 	}
-	public void shoot(Player p, Player p2) {}
 	public int getNbCarrier() {
 		return nbCarrier;
 	}
@@ -265,5 +276,6 @@ public class Player {
 	public void setNbDestroyer() {
 		this.nbDestroyer += 1;
 	}
+
 
 }
