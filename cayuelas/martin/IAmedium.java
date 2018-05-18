@@ -4,7 +4,7 @@ package cayuelas.martin;
 import java.util.ArrayList;
 import java.util.Random;
 
-public class IAmedium  implements IA {
+public class IAmedium  implements Iia {
 	private String name;
 	private int score;
 	private ArrayList<Ship> Flotte;
@@ -66,7 +66,7 @@ public class IAmedium  implements IA {
 	}
 
 	@Override
-	public void shoot(Player monPlayer, Player monAdversaire) {
+	public void shoot(Iplayer monPlayer, Iplayer monAdversaire) {
 
 		Coordonnee c = new Coordonnee();
 		boolean tirOk = false;
@@ -151,29 +151,8 @@ public class IAmedium  implements IA {
 		return myCoordsShooted;
 	}
 
-	@Override
-	public String afficheFlotteDetails() {
-		// TODO Auto-generated method stub
-		String str = "Carriers (Taille 5): " + this.getNbCarrier() + "\n";
-		str += "Cruisers (Taille 3): " + this.getNbCruiser() + "\n";
-		str += "Battleships (Taille 4): " + this.getNbBattleship() + "\n";
-		str += "Destroyers (Taille 2): " + this.getNbDestroyer() + "\n";
-		str += "Submarines (Taille 3): " + this.getNbSubmarine() + "\n";
+	
 
-		return str;
-	}
-
-	@Override
-	public void incrementeTypeBateau(int size) {
-		// TODO Auto-generated method stub
-
-	}
-
-	@Override
-	public boolean verificationAjout(int size) {
-		// TODO Auto-generated method stub
-		return false;
-	}
 
 	@Override
 	public boolean verificationChevauchement(Ship shipTraite) {
@@ -290,64 +269,5 @@ public class IAmedium  implements IA {
 	}
 
 
-	@Override
-	public int getNbCarrier() {
-		// TODO Auto-generated method stub
-		return 0;
-	}
-
-	@Override
-	public void setNbCarrier() {
-		// TODO Auto-generated method stub
-		
-	}
-
-	@Override
-	public int getNbCruiser() {
-		// TODO Auto-generated method stub
-		return 0;
-	}
-
-	@Override
-	public void setNbCruiser() {
-		// TODO Auto-generated method stub
-		
-	}
-
-	@Override
-	public int getNbBattleship() {
-		// TODO Auto-generated method stub
-		return 0;
-	}
-
-	@Override
-	public void setNbBattleship() {
-		// TODO Auto-generated method stub
-		
-	}
-
-	@Override
-	public int getNbSubmarine() {
-		// TODO Auto-generated method stub
-		return 0;
-	}
-
-	@Override
-	public void setNbSubmarine() {
-		// TODO Auto-generated method stub
-		
-	}
-
-	@Override
-	public int getNbDestroyer() {
-		// TODO Auto-generated method stub
-		return 0;
-	}
-
-	@Override
-	public void setNbDestroyer() {
-		// TODO Auto-generated method stub
-		
-	}
-
+	
 }

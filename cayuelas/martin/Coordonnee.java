@@ -208,7 +208,7 @@ public class Coordonnee {
 		return pair;
 	}
 	
-	public static Coordonnee huntMode(Player p) {
+	public static Coordonnee huntMode(Iplayer p) {
 		Coordonnee c = new Coordonnee();
 		boolean tirPossible = false;
 

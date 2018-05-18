@@ -2,7 +2,7 @@ package cayuelas.martin;
 
 import java.util.ArrayList;
 
-public class Human implements Player {
+public class Human implements Iplayer {
 
 	
 	

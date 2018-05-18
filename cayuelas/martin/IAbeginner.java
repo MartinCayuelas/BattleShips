@@ -4,7 +4,7 @@ package cayuelas.martin;
 import java.util.ArrayList;
 import java.util.Random;
 
-public class IAbeginner  implements IA {
+public class IAbeginner  implements Iia {
 	private String name;
 	private int score;
 	private ArrayList<Ship> Flotte;
@@ -40,12 +40,10 @@ public class IAbeginner  implements IA {
 				} else {
 					tabCoords = start.getPossibilities(i);
 				}
-
 				Random endV = new Random();
 				int valEnd = 0 + endV.nextInt(tabCoords.size() - 0);
-
-				Ship s = new Ship(start.getCoordonnee(), tabCoords.get(valEnd).getCoordonnee());
 				
+				Ship s = new Ship(start.getCoordonnee(), tabCoords.get(valEnd).getCoordonnee());
 				
 				boolean chevauchement = this.verificationChevauchement(s);
 				if (!chevauchement) {
@@ -58,20 +56,14 @@ public class IAbeginner  implements IA {
 						System.out.println(c.getCoordonnee());
 					}
 				}
-
 			}
-			
 		}
-
-
 	}
 
-	public void shoot(Player monPlayer, Player monAdversaire) {
-
+	public void shoot(Iplayer monPlayer, Iplayer monAdversaire) {
 		Coordonnee c = Coordonnee.coordRandom();
 		System.out.println("Tir: " + c.getCoordonnee());
 		/************ Partie 2 *************/
-
 		boolean touche = false;
 		boolean destroyed = false;// variable pour supprimer un bateau si jamais il est coulé
 		Ship shipDelete = new Ship();// Bateau fictif pour les vérifications +
@@ -94,7 +86,6 @@ public class IAbeginner  implements IA {
 			monPlayer.getmyCoordsShooted().add(c);
 			System.out.println("Raté");
 		}
-
 		if (destroyed) {
 			System.out.println("Coulé");
 			monAdversaire.getFlotte().remove(shipDelete);
@@ -102,8 +93,6 @@ public class IAbeginner  implements IA {
 			int score = monPlayer.getScore() + 1;
 			monPlayer.setScore(score);
 		}
-		
-
 	}
 	
 	
@@ -132,36 +121,12 @@ public class IAbeginner  implements IA {
 		return myCoordsShooted;
 	}
 
-		
-	@Override
-	public String afficheFlotteDetails() {
-		// TODO Auto-generated method stub
-		String str = "Carriers (Taille 5): " + this.getNbCarrier() + "\n";
-		str += "Cruisers (Taille 3): " + this.getNbCruiser() + "\n";
-		str += "Battleships (Taille 4): " + this.getNbBattleship() + "\n";
-		str += "Destroyers (Taille 2): " + this.getNbDestroyer() + "\n";
-		str += "Submarines (Taille 3): " + this.getNbSubmarine() + "\n";
 
-		return str;
-	}
-
-	@Override
-	public void incrementeTypeBateau(int size) {
-		// TODO Auto-generated method stub
-		
-	}
-
-	@Override
-	public boolean verificationAjout(int size) {
-		// TODO Auto-generated method stub
-		return false;
-	}
 
 	
 	public boolean verificationChevauchement(Ship shipTraite) {
 		// TODO Auto-generated method stub
 		boolean coordEgale = false;
-
 		for (Ship s : this.Flotte) {
 			int i = 0;
 			while (!coordEgale && i < s.getSize()) {
@@ -177,13 +142,11 @@ public class IAbeginner  implements IA {
 		}
 		return coordEgale;
 	}
-
 	@Override
 	public boolean isShooted(String shoot) {
 		// TODO Auto-generated method stub
 		return false;
 	}
-
 	@Override
 	public String myCoordsShootedString() {
 		String str = "";
@@ -196,11 +159,9 @@ public class IAbeginner  implements IA {
 			l++; // On change la lettre
 			cpt++;
 		}
-
 		str += lettres + "\n";
 		letter = "A";
 		l = letter.charAt(0);
-
 		int u = 0;
 		int w;
 		while (u < 10) {
@@ -219,7 +180,6 @@ public class IAbeginner  implements IA {
 						equal = true;
 						if (coord.getHit() == 1) {
 							touche = true;
-
 						}
 					}
 				}
@@ -232,7 +192,6 @@ public class IAbeginner  implements IA {
 				} else {
 					str += "" + "〰️" + "\t";
 				}
-
 				w++;
 				l++;
 			}
@@ -253,64 +212,5 @@ public class IAbeginner  implements IA {
 		this.score= 0;
 	}
 
-	@Override
-	public int getNbCarrier() {
-		// TODO Auto-generated method stub
-		return 0;
-	}
-
-	@Override
-	public void setNbCarrier() {
-		// TODO Auto-generated method stub
-		
-	}
-
-	@Override
-	public int getNbCruiser() {
-		// TODO Auto-generated method stub
-		return 0;
-	}
-
-	@Override
-	public void setNbCruiser() {
-		// TODO Auto-generated method stub
-		
-	}
-
-	@Override
-	public int getNbBattleship() {
-		// TODO Auto-generated method stub
-		return 0;
-	}
-
-	@Override
-	public void setNbBattleship() {
-		// TODO Auto-generated method stub
-		
-	}
-
-	@Override
-	public int getNbSubmarine() {
-		// TODO Auto-generated method stub
-		return 0;
-	}
-
-	@Override
-	public void setNbSubmarine() {
-		// TODO Auto-generated method stub
-		
-	}
-
-	@Override
-	public int getNbDestroyer() {
-		// TODO Auto-generated method stub
-		return 0;
-	}
-
-	@Override
-	public void setNbDestroyer() {
-		// TODO Auto-generated method stub
-		
-	}
-
+	
 }

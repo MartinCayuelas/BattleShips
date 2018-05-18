@@ -3,7 +3,7 @@ package cayuelas.martin;
 import java.util.ArrayList;
 import java.util.Scanner;
 
-public interface Player {
+public interface Iplayer {
 
 	
 

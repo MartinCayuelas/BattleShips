@@ -14,7 +14,7 @@ public class Ship {
 	public Ship(String start, String end){
 		int sizeTab = 0;
 
-		if (!start.equals(end)) {
+		if (!start.equals(end)) { //IF == then sizeShip == 1, not possible
 
 			Coordonnee startC = new Coordonnee(start);
 			Coordonnee endC = new Coordonnee(end);
@@ -51,12 +51,7 @@ public class Ship {
 		}
 	}
 
-	
-
-	
-
 	public int getSize() {
-
 		return this.tabCoord.length;
 	}
 
@@ -68,10 +63,8 @@ public class Ship {
 		Coordonnee startC = new Coordonnee(start);
 		Coordonnee endC = new Coordonnee(end);
 		boolean diagonal = false;
-		if (!(startC.getPartOne() == endC.getPartOne()) && !(startC.getPartTwo() == endC.getPartTwo())) { // Bateau
-																											// impossible
-			diagonal = true; // à placer
-
+		if (!(startC.getPartOne() == endC.getPartOne()) && !(startC.getPartTwo() == endC.getPartTwo())) { //Bateau impossible à placer																					
+			diagonal = true; 
 		}
 		return diagonal;
 	}
@@ -88,33 +81,21 @@ public class Ship {
 				if (tabCoord[i].getCoordonnee().equals(missileCoord)) {
 					tabCoord[i].setHit();
 					touche = true;
-
 				}
 			}
 			i++;
 		}
-
 		return touche;
-
 	}
 
 	public boolean isDestroyed() {
-
 		int cpt = 0;
 		for (int i = 0; i < this.getSize(); i++) {
 			if (this.getTabCoord()[i].getHit() == 1) {
 				cpt++;
 			}
-
 		}
-
 		return cpt == this.getSize();
 	}
-
-	/***************************************************************/
-
-	
-
-	/*****************************************************************/
 
 }
