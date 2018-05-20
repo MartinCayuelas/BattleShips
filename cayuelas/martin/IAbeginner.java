@@ -33,7 +33,7 @@ public class IAbeginner  implements Iia {
 				String partOne = tab[valeurL - 1];
 				String coord = partOne + "" + valeurC;
 				Coordonnee start = new Coordonnee(coord);
-				System.out.println("Start: " + start.getCoordonnee());
+				
 				ArrayList<Coordonnee> tabCoords;
 				if (i == 6) {
 					tabCoords = start.getPossibilities(i - 3);
@@ -52,9 +52,7 @@ public class IAbeginner  implements Iia {
 					i++;
 					nb++;
 					System.out.println("Ship Size: " + s.getSize());
-					for (Coordonnee c : s.getTabCoord()) {
-						System.out.println(c.getCoordonnee());
-					}
+					
 				}
 			}
 		}

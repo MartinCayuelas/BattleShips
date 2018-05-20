@@ -50,7 +50,7 @@ public class Battleship {
 					System.out.println("--J" + t + "--" + p.getName());
 					initPlayer(p);
 					
-					System.out.println(p.getFlotte());
+					System.out.println(p.toString());
 					p = monAdversaire;
 				}
 				System.out.println("---------Début de la partie-----------");
@@ -82,8 +82,23 @@ public class Battleship {
 				System.out.println("Score de " + player2.getName() + " : " + player2.getScore());
 
 				System.out.println("Relancer une nouvelle partie? Tapez 1 (oui), Tapez 2 (non)");
-				Scanner scPartie = new Scanner(System.in);
-				int newPartie = scPartie.nextInt();
+				
+				 int newPartie  = 1;
+				boolean choixOkN = false;
+				while (!choixOkN) {
+					Scanner scNew = new Scanner(System.in);
+					try {
+						newPartie = scNew.nextInt();
+						if (newPartie >= 1 && newPartie <= 2) {
+							choixOkN = true;
+						}else{
+							System.out.println("Il faut un entier compris entre 1 et 2");
+						}
+					} catch (Exception e) {
+						System.out.println("Mauvais Format");
+					}
+				}
+				
 
 				if (newPartie == 1) {
 					player1.resetPlayer();
@@ -106,8 +121,23 @@ public class Battleship {
 			Human player1 = new Human(name);
 
 			System.out.println("Entrez le niveau de l'IA ( 1 = beginner, 2 = medium, 3 = hard)");
-			Scanner scAi = new Scanner(System.in);
-			int choixIa = scAi.nextInt();
+			
+			boolean choixOkIA = false;
+
+			int choixIa = 0;
+			while (!choixOkIA) {
+				Scanner scAi = new Scanner(System.in);
+				try {
+					choixIa = scAi.nextInt();
+					if (choixIa >= 1 && choixIa <= 3) {
+						choixOkIA = true;
+					}else{
+						System.out.println("Il faut un entier compris entre 1 et 3");
+					}
+				} catch (Exception e) {
+					System.out.println("Mauvais Format");
+				}
+			}
 			/**************** Init IA ***********/
 
 			Iia ia;
@@ -153,15 +183,11 @@ public class Battleship {
 							end = true;
 						}
 						if (!end) {
-							System.out.println("Player  : " + ia.getName());
-							System.out.println("Grille : -------------------------------");
-							System.out.println(ia.myCoordsShootedString());
+							System.out.println("----------IA-----------");
 							ia.shoot(ia, player1);
 						}
 					} else {
-						System.out.println("Player  : " + ia.getName());
-						System.out.println("Grille : -------------------------------");
-						System.out.println(ia.myCoordsShootedString());
+						System.out.println("----------IA-----------");
 						ia.shoot(ia, player1);
 						System.out.println("------------Changement de tour--------------");
 						if ((player1.getFlotte().size() == 0)) {
@@ -184,8 +210,22 @@ public class Battleship {
 				System.out.println("Score de " + ia.getName() + " : " + ia.getScore());
 
 				System.out.println("Relancer une nouvelle partie? Tapez 1 (oui), Tapez 2 (non)");
-				Scanner scPartie = new Scanner(System.in);
-				int newPartie = scPartie.nextInt();
+				
+				int newPartie  = 1;
+				boolean choixOkN = false;
+				while (!choixOkN) {
+					Scanner scNew = new Scanner(System.in);
+					try {
+						newPartie = scNew.nextInt();
+						if (newPartie >= 1 && newPartie <= 2) {
+							choixOkN = true;
+						}else{
+							System.out.println("Il faut un entier compris entre 1 et 2");
+						}
+					} catch (Exception e) {
+						System.out.println("Mauvais Format");
+					}
+				}
 
 				if (newPartie == 1) {
 					player1.resetPlayer();
@@ -210,13 +250,15 @@ public class Battleship {
 	
 	
 	
-	public static void shootProcessPlayer(Iplayer player1, Iplayer ia) {
+	public static void shootProcessPlayer(Iplayer player1, Iplayer p2) {
 		System.out.println("Player  : " + player1.getName());
 		System.out.println("Grille : -------------------------------");
 		System.out.println("Mes tirs: ");
 		System.out.println(player1.myCoordsShootedString());
+		System.out.println("Il reste :" + p2.toString());
+		System.out.println("Il reste " + p2.getFlotte().size() + " bateaux à couler");
 		System.out.println("Ma grille: (Positions que mon adversaire touche )");
-		System.out.println(ia.myCoordsShootedString());
+		System.out.println(p2.myCoordsShootedString());
 		boolean tirOk = false;
 		String tir1 = "";
 		Coordonnee c = null;
@@ -235,7 +277,7 @@ public class Battleship {
 		Ship shipDelete = new Ship();// Bateau fictif pour les vérifications +
 		// Si jamais aucun bateau n'est touché on peut dire que la position de tir est
 		// ratée
-		for (Ship s1 : ia.getFlotte()) {
+		for (Ship s1 : p2.getFlotte()) {
 			if (s1.isHit(c.getCoordonnee())) {
 				touche = true;
 				c.setHit();
@@ -255,8 +297,8 @@ public class Battleship {
 
 		if (destroyed) {
 			System.out.println("Coulé");
-			ia.getFlotte().remove(shipDelete);
-			System.out.println("Il reste " + ia.getFlotte().size() + " bateaux à couler");
+			p2.getFlotte().remove(shipDelete);
+			System.out.println("Il reste " + p2.getFlotte().size() + " bateaux à couler");
 			int score = player1.getScore() + 1;
 			player1.setScore(score);
 		}

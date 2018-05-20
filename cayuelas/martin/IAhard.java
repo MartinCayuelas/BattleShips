@@ -157,7 +157,7 @@ public class IAhard implements Iia {
 			String partOne = tab[valeurL - 1];
 			String coord = partOne + "" + valeurC;
 			Coordonnee start = new Coordonnee(coord);
-			System.out.println("Start: " + start.getCoordonnee());
+			
 			ArrayList<Coordonnee> tabCoords;
 
 			tabCoords = start.getPossibilities(2);
@@ -172,9 +172,7 @@ public class IAhard implements Iia {
 				this.getFlotte().add(s); // Ajout du Bateau à la flotte
 				ajoute = true; // On a ajouté le Bateau
 				System.out.println("Ship Size: " + s.getSize());
-				for (Coordonnee c : s.getTabCoord()) {
-					System.out.println(c.getCoordonnee());
-				}
+				
 			}
 
 		}
@@ -193,7 +191,7 @@ public class IAhard implements Iia {
 			String partOne = tab[valeurL - 1];
 			String coord = partOne + "" + valeurC;
 			Coordonnee start = new Coordonnee(coord);
-			System.out.println("Start: " + start.getCoordonnee());
+			
 			ArrayList<Coordonnee> tabCoords;
 
 			tabCoords = start.getPossibilities(3);
@@ -208,9 +206,7 @@ public class IAhard implements Iia {
 				this.getFlotte().add(s); // Ajout du Bateau à la flotte
 				ajoute = true; // On a ajouté le Bateau
 				System.out.println("Ship Size: " + s.getSize());
-				for (Coordonnee c : s.getTabCoord()) {
-					System.out.println(c.getCoordonnee());
-				}
+				
 			}
 
 		}
@@ -228,7 +224,7 @@ public class IAhard implements Iia {
 			String partOne = tab[valeurL - 1];
 			String coord = partOne + "" + valeurC;
 			Coordonnee start = new Coordonnee(coord);
-			System.out.println("Start: " + start.getCoordonnee());
+			
 			ArrayList<Coordonnee> tabCoords;
 
 			tabCoords = start.getPossibilities(5);
@@ -243,9 +239,7 @@ public class IAhard implements Iia {
 				this.getFlotte().add(s); // Ajout du Bateau à la flotte
 				ajoute = true; // On a ajouté le Bateau
 				System.out.println("Ship Size: " + s.getSize());
-				for (Coordonnee c : s.getTabCoord()) {
-					System.out.println(c.getCoordonnee());
-				}
+				
 			}
 
 		}
@@ -263,7 +257,7 @@ public class IAhard implements Iia {
 			String partOne = tab[valeurL - 1];
 			String coord = partOne + "" + valeurC;
 			Coordonnee start = new Coordonnee(coord);
-			System.out.println("Start: " + start.getCoordonnee());
+			
 			ArrayList<Coordonnee> tabCoords;
 
 			tabCoords = start.getPossibilities(4);
@@ -278,9 +272,7 @@ public class IAhard implements Iia {
 				this.getFlotte().add(s); // Ajout du Bateau à la flotte
 				ajoute = true; // On a ajouté le Bateau
 				System.out.println("Ship Size: " + s.getSize());
-				for (Coordonnee c : s.getTabCoord()) {
-					System.out.println(c.getCoordonnee());
-				}
+				
 			}
 
 		}
@@ -298,7 +290,7 @@ public class IAhard implements Iia {
 			String partOne = tab[valeurL - 1];
 			String coord = partOne + "" + valeurC;
 			Coordonnee start = new Coordonnee(coord);
-			System.out.println("Start: " + start.getCoordonnee());
+			
 			ArrayList<Coordonnee> tabCoords;
 
 			tabCoords = start.getPossibilities(3);
@@ -313,9 +305,7 @@ public class IAhard implements Iia {
 				this.getFlotte().add(s); // Ajout du Bateau à la flotte du Robot
 				ajoute = true; // On a ajouté le Bateau
 				System.out.println("Ship Size: " + s.getSize());
-				for (Coordonnee c : s.getTabCoord()) {
-					System.out.println(c.getCoordonnee());
-				}
+				
 			}
 
 		}

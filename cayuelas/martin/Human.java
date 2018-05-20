@@ -143,11 +143,12 @@ public class Human implements Iplayer {
 
 	@Override
 	public String toString() {
-		String st = "";
-		st += this.getName() + ": \n";
+		String st = "[ ";
+		
 		for (Ship s : this.Flotte) {
-			st += s.getSize();
+			st += s.getSize()+"  ";
 		}
+		st+=" ]";
 		return st;
 	}
 

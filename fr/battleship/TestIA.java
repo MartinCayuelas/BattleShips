@@ -21,30 +21,27 @@ public class TestIA {
 			/**************** Init IA 1 ***********/
 			IAbeginner beginner = new IAbeginner("Frodon");
 			beginner.createFleet();
-			System.out.println(beginner.getFlotte());
+			System.out.println(beginner.toString());
 
 			/**************** Init I2 ***********/
 			IAmedium medium = new IAmedium("Aragorn");
 			medium.createFleet();
-			System.out.println(medium.getFlotte());
+			System.out.println(medium.toString());
 			int j = 0;
 			boolean end = false;
 			while ((beginner.getFlotte().size() != 0) && (medium.getFlotte().size() != 0)) {
 
 				if (tour) {
-					System.out.println("Beginner_-----------------------------");
 					beginner.shoot(beginner, medium);
 
 					if ((medium.getFlotte().size() == 0)) {
 						end = true;
 					}
 					if (!end) {
-						System.out.println("Medium_-----------------------------");
 						medium.shoot(medium, beginner);
 						j++;
 					}
 				} else {
-					System.out.println("Medium_-----------------------------");
 					medium.shoot(medium, beginner);
 
 					if ((beginner.getFlotte().size() == 0)) {
@@ -52,9 +49,7 @@ public class TestIA {
 					}
 					if (!end) {
 
-						System.out.println("Player  : " + beginner.getName());
-						System.out.println("Grille : -------------------------------");
-						// System.out.println(beginner.myCoordString());
+						
 						beginner.shoot(beginner, medium);
 						j++;
 
@@ -156,40 +151,36 @@ public class TestIA {
 			/**************** Init IA 1 ***********/
 			IAmedium medium = new IAmedium("Frodon");
 			medium.createFleet();
-			System.out.println(medium.getFlotte());
+			System.out.println(medium.toString());
 
 			/**************** Init I2 ***********/
 			IAhard hard = new IAhard("Gandalf");
 			hard.createFleet();
-			System.out.println(hard.getFlotte());
+			System.out.println(hard.toString());
 
 			int j = 1;
 			boolean end = false;
 			while ((medium.getFlotte().size() != 0) && (hard.getFlotte().size() != 0)) {
 
 				if (tour) {
-					System.out.println("Medium_-----------------------------");
+					
 					medium.shoot(medium, hard);
 
 					if ((hard.getFlotte().size() == 0)) {
 						end = true;
 					}
 					if (!end) {
-						System.out.println("Hard_-----------------------------Tour: " + j);
 						hard.shoot(hard, medium);
 
 						j++;
 					}
 				} else {
-					System.out.println("Hard_-----------------------------Tour: " + j);
 					hard.shoot(hard, medium);
 
 					if ((medium.getFlotte().size() == 0)) {
 						end = true;
 					}
 					if (!end) {
-
-						System.out.println("Medium_-----------------------------");
 						medium.shoot(medium, hard);
 						j++;
 
@@ -210,7 +201,7 @@ public class TestIA {
 			}
 		}
 
-		System.out.println("Tests terminés -- Score enregistrés dans le fichier ai_proof.csv ");
+		System.out.println("Tests terminés -- Scores enregistrés dans le fichier ai_proof.csv ");
 
 		// partie csv
 
