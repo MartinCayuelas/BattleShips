@@ -16,5 +16,5 @@ Se mettre dans le dossier source à la racine:
 - javac fr/battleship/TestIA.java
 
 ---
-­ java cayuelas.martin.Battleship
-­ java fr.battleship.TestIA
+- java cayuelas.martin.Battleship
+- java fr.battleship.TestIA
